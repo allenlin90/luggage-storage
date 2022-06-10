@@ -9,7 +9,8 @@ const nextConfig = {
   reactStrictMode: true,
   i18n,
   pwa: {
-    disable: process.env.NODE_ENV === 'local',
+    // disable: process.env.NODE_ENV === 'local',
+    disable: process.env.NODE_ENV !== 'production',
   },
 };
 
