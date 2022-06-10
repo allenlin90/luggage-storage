@@ -1,6 +1,7 @@
 import { GetServerSideProps, NextPage } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { Seo, Warehouse } from 'components';
+import { WarehouseProvider } from 'context';
 
 export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
   return {
@@ -15,7 +16,9 @@ export const WarehousePage: NextPage = () => {
   return (
     <>
       <Seo title='Warehouse' />
-      <Warehouse />
+      <WarehouseProvider>
+        <Warehouse />
+      </WarehouseProvider>
     </>
   );
 };
