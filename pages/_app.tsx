@@ -6,20 +6,21 @@ import { SessionProvider } from 'next-auth/react';
 import { appWithTranslation } from 'next-i18next';
 import { DefaultSeoConfig } from 'next-seo.config';
 import { theme } from 'styles';
-import { RouteLoader, Layout } from 'components';
+import { RouteLoader, Layout, SessionChecker } from 'components';
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
-  const [refetchInterval, setRefetchInterval] = useState(0);
+  const [refetchInterval, setRefetchInterval] = useState<number>(0);
 
   return (
     <>
-      <DefaultSeo {...DefaultSeoConfig} />
       <SessionProvider
         session={session}
         refetchOnWindowFocus
         refetchInterval={refetchInterval}
       >
         <ThemeProvider theme={theme}>
+          <DefaultSeo {...DefaultSeoConfig} />
+          <SessionChecker setter={setRefetchInterval} />
           <RouteLoader>
             <Layout>
               <Component {...pageProps} />

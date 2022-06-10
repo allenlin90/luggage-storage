@@ -99,8 +99,6 @@ export default NextAuth({
         token.expiresAt = (account.expires_at as number) * 1000;
       }
 
-      // return token;
-
       if (typeof token.expiresAt === 'number' && Date.now() < token.expiresAt) {
         return token;
       }
@@ -111,6 +109,7 @@ export default NextAuth({
     },
     session: async (ctx) => {
       const { session, token, user } = ctx;
+
       if (token) {
         const { expiresAt, accessToken } = token;
         session.token = {
@@ -119,6 +118,7 @@ export default NextAuth({
           testExpiresAt: Date.now() + 20 * 1000,
         };
       }
+
       return session;
     },
   },
