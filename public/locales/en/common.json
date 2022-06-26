@@ -1,0 +1,21 @@
+{
+  "topNav": "",
+  "sideNav": {
+    "warehouse": "Warehouse",
+    "setting": "Setting",
+    "links": {
+      "warehouse": "Warehouse"
+    },
+    "select": {
+      "hint": "Select a branch"
+    },
+    "btn": { "signout": "Signout" }
+  },
+  "branch": {
+    "dmk": "Don Mueang",
+    "bkk": "Suvarnabhumi",
+    "t21": "Terminal 21",
+    "ctw": "Central World",
+    "mbk": "MBK"
+  }
+}

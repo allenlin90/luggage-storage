@@ -1,3 +1,4 @@
+export * from './FlexSpacer';
 export * from './Layout';
 export * from './Loader';
 export * from './PageLoader';

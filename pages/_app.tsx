@@ -7,6 +7,7 @@ import { appWithTranslation } from 'next-i18next';
 import { DefaultSeoConfig } from 'next-seo.config';
 import { theme } from 'styles';
 import { RouteLoader, Layout, SessionChecker } from 'components';
+import { CssBaseline } from '@mui/material';
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const [refetchInterval, setRefetchInterval] = useState<number>(0);
@@ -20,6 +21,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
       >
         <ThemeProvider theme={theme}>
           <DefaultSeo {...DefaultSeoConfig} />
+          <CssBaseline />
           <SessionChecker setter={setRefetchInterval} />
           <RouteLoader>
             <Layout>
