@@ -11,7 +11,7 @@ export interface DrawerSideHeadProps {
 export const DrawerSideHead: FC<DrawerSideHeadProps> = ({
   placeholder = 'Warehouse',
   imgSrc,
-  drawerWidth = '15rem',
+  drawerWidth = '16rem',
 }) => {
   return (
     <Box
@@ -35,6 +35,7 @@ export const DrawerSideHead: FC<DrawerSideHeadProps> = ({
           variant='h1'
           sx={{
             fontSize: '2rem',
+            fontWeight: 600,
             textAlign: 'center',
           }}
         >

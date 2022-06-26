@@ -5,14 +5,16 @@ import { ListItem, ListItemIcon, ListItemText } from '@mui/material';
 
 export interface DrawerSettingsProps {
   settingsText?: string;
+  selected?: boolean;
 }
 
 export const DrawerSettings: FC<DrawerSettingsProps> = ({
   settingsText = 'Settings',
+  selected = false,
 }) => {
   return (
     <Link href='/settings' passHref>
-      <ListItem button>
+      <ListItem button selected={selected}>
         <ListItemIcon>
           <SettingsIcon />
         </ListItemIcon>

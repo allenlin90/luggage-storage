@@ -22,6 +22,7 @@ export const PageLoader: FC<PageLoaderProps> = ({ isLoading = false }) => {
           justifyContent: 'center',
           alignItems: 'center',
           flexDirection: 'column',
+          zIndex: 9999, // should be put to portal
         }}
       >
         <Loader />

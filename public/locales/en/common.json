@@ -1,15 +1,16 @@
 {
-  "topNav": "",
   "sideNav": {
     "warehouse": "Warehouse",
     "setting": "Setting",
-    "links": {
-      "warehouse": "Warehouse"
-    },
     "select": {
       "hint": "Select a branch"
     },
     "btn": { "signout": "Signout" }
+  },
+  "links": {
+    "warehouse": "Warehouse",
+    "scanner": "Scanner",
+    "settings": "Settings"
   },
   "branch": {
     "dmk": "Don Mueang",

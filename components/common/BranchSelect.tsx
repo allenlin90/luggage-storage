@@ -5,7 +5,11 @@ import { branches } from 'utils';
 import { selectedBranchState } from 'states';
 import { useRecoilState } from 'recoil';
 
-export const DrawerSelect: FC = () => {
+export interface BranchSelectProps {
+  isMobile?: boolean;
+}
+
+export const BranchSelect: FC<BranchSelectProps> = ({ isMobile = true }) => {
   const { t } = useTranslation('common');
   const [selectedBranch, setSelectedBranch] =
     useRecoilState(selectedBranchState);
@@ -16,6 +20,7 @@ export const DrawerSelect: FC = () => {
       value={selectedBranch}
       label={t('sideNav.select.hint')}
       size='small'
+      sx={{ ...(isMobile && { marginX: '1rem' }) }}
     >
       {branches.map(({ id }) => {
         return (
@@ -28,4 +33,4 @@ export const DrawerSelect: FC = () => {
   );
 };
 
-export default DrawerSelect;
+export default BranchSelect;

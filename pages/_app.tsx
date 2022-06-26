@@ -8,6 +8,7 @@ import { DefaultSeoConfig } from 'next-seo.config';
 import { theme } from 'styles';
 import { RouteLoader, Layout, SessionChecker } from 'components';
 import { CssBaseline } from '@mui/material';
+import { RecoilRoot } from 'recoil';
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const [refetchInterval, setRefetchInterval] = useState<number>(0);
@@ -23,11 +24,13 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
           <DefaultSeo {...DefaultSeoConfig} />
           <CssBaseline />
           <SessionChecker setter={setRefetchInterval} />
-          <RouteLoader>
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
-          </RouteLoader>
+          <RecoilRoot>
+            <RouteLoader>
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            </RouteLoader>
+          </RecoilRoot>
         </ThemeProvider>
       </SessionProvider>
     </>

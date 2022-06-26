@@ -1,7 +1,5 @@
-import { FC, ReactNode, useCallback, useEffect, useState } from 'react';
 import { useWindowSize } from 'react-use';
-import MenuIcon from '@mui/icons-material/Menu';
-import { IconButton, Toolbar, Typography } from '@mui/material';
+import { FC, ReactNode, useCallback, useEffect, useState } from 'react';
 import {
   DrawerMain,
   DrawerHeader,
@@ -13,13 +11,13 @@ export interface DrawerLayout {
   children: ReactNode;
 }
 
-const drawerWidth = '15rem';
+const drawerWidth = '16rem';
 const breakPoint = 900;
 
 export const DrawerLayout: FC<DrawerLayout> = ({ children }) => {
-  const [openDrawer, setOpenDrawer] = useState(false);
-  const [isMobile, setIsMobile] = useState(true);
   const { width } = useWindowSize();
+  const [isMobile, setIsMobile] = useState(true);
+  const [openDrawer, setOpenDrawer] = useState(false);
 
   const toggleDrawer = useCallback(() => {
     setOpenDrawer((oldVal) => !oldVal);
@@ -40,31 +38,17 @@ export const DrawerLayout: FC<DrawerLayout> = ({ children }) => {
   return (
     <>
       <DrawerTopNav
-        position='fixed'
         open={openDrawer}
         isMobile={isMobile}
-        elevation={0}
-      >
-        <Toolbar>
-          <IconButton
-            size='large'
-            edge='start'
-            color='inherit'
-            aria-label='menu'
-            sx={{ mr: 2 }}
-            onClick={toggleDrawer}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography sx={{ flexGrow: 1 }}>Top Nav</Typography>
-        </Toolbar>
-      </DrawerTopNav>
+        onClick={toggleDrawer}
+      />
       <DrawerSideNav
         open={openDrawer}
         drawerWidth={drawerWidth}
         breakPoint={breakPoint}
         onClose={() => setOpenDrawer(false)}
         screenWidth={width}
+        isMobile={isMobile}
       />
       <DrawerHeader />
       <DrawerMain

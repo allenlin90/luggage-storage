@@ -7,7 +7,7 @@ export const DrawerMain = styled(Box, {
   open?: boolean;
   drawerWidth?: string;
   isMobile?: boolean;
-}>(({ theme, open = false, drawerWidth = '15rem', isMobile = true }) => ({
+}>(({ theme, open = false, drawerWidth = '16rem', isMobile = true }) => ({
   flexGrow: 1,
   padding: theme.spacing(3),
   transition: theme.transitions.create('margin', {
