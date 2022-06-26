@@ -1,9 +1,10 @@
 import { FC, useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
 import MuiAppBar from '@mui/material/AppBar';
 import MenuIcon from '@mui/icons-material/Menu';
 import { styled, Toolbar, IconButton, Typography } from '@mui/material';
-import { useTranslation } from 'next-i18next';
-import { useRouter } from 'next/router';
+import { BranchSelect, FlexSpacer } from 'components';
 
 export interface DrawerTopNavProps {
   open?: boolean;
@@ -64,6 +65,8 @@ export const DrawerTopNav: FC<DrawerTopNavProps> = ({
         <Typography variant='h1' sx={{ fontSize: '2rem', fontWeight: 600 }}>
           {t(`links.${onPath}`)}
         </Typography>
+        <FlexSpacer />
+        {!isMobile && <BranchSelect />}
       </Toolbar>
     </AppBar>
   );

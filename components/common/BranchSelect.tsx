@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { useTranslation } from 'next-i18next';
-import { Select, MenuItem } from '@mui/material';
+import { Select, MenuItem, Typography } from '@mui/material';
 import { branches } from 'utils';
 import { selectedBranchState } from 'states';
 import { useRecoilState } from 'recoil';
@@ -18,14 +18,14 @@ export const BranchSelect: FC<BranchSelectProps> = ({ isMobile = true }) => {
     <Select
       onChange={(e) => setSelectedBranch(e.target.value as string)}
       value={selectedBranch}
-      label={t('sideNav.select.hint')}
+      // label={<Typography>{t('sideNav.select.hint')}</Typography>}
       size='small'
-      sx={{ ...(isMobile && { marginX: '1rem' }) }}
+      sx={{ minWidth: '10rem', ...(isMobile && { marginX: '1rem' }) }}
     >
       {branches.map(({ id }) => {
         return (
           <MenuItem key={id} value={id}>
-            {t(`branch.${id}`)}
+            <Typography>{t(`branch.${id}`)}</Typography>
           </MenuItem>
         );
       })}
