@@ -28,7 +28,6 @@
     "react": "18.1.0",
     "react-beautiful-dnd": "^13.1.0",
     "react-dom": "18.1.0",
-    "react-qr-barcode-scanner": "^1.0.6",
     "react-query": "^3.39.1",
     "react-use": "^17.4.0",
     "recoil": "^0.7.4",

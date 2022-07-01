@@ -18,5 +18,9 @@
     "t21": "Terminal 21",
     "ctw": "Central World",
     "mbk": "MBK"
+  },
+  "hint": {
+    "loading": "Loading",
+    "starting": "Starting"
   }
 }
