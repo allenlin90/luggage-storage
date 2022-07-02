@@ -1,9 +1,8 @@
-import { FC, useState, useTransition, KeyboardEvent } from 'react';
+import { FC, useState, useTransition } from 'react';
 import { useWarehouse } from 'context';
 import { DragDropContext, DragStart, DropResult } from 'react-beautiful-dnd';
 import { Box } from '@mui/material';
-import WarehouseDrop from './dnd/WarehouseDrop';
-import WarehouseDrag from './dnd/WarehouseDrag';
+import { WarehouseDrop, WarehouseDrag } from 'components';
 
 export const WarehouseDnD: FC = () => {
   const [warehouse] = useWarehouse();

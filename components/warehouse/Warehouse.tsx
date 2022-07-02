@@ -1,6 +1,8 @@
 import { FC } from 'react';
 import { Box } from '@mui/material';
-import { WarehouseDnD } from 'components';
+
+import dynamic from 'next/dynamic';
+const WarehouseDnD = dynamic(() => import('./WarehouseDnD'));
 
 export const Warehouse: FC = () => {
   return (

@@ -1,11 +1,13 @@
 import { FC, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { Box, Button, IconButton, Typography } from '@mui/material';
-import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
-import dynamic from 'next/dynamic';
-import { useRouter } from 'next/router';
 
+import dynamic from 'next/dynamic';
 const ScannerFull = dynamic(() => import('./ScannerFull'));
+const QrCodeScannerIcon = dynamic(
+  () => import('@mui/icons-material/QrCodeScanner')
+);
 
 export const ScannerPanel: FC = () => {
   const { t } = useTranslation(['scanner', 'common']);

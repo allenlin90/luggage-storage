@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import { wasToggleInSelectionGroupKeyUsed, wasMultiSelectKeyUsed } from 'utils';
 
-export interface WarehouseDropProps {
+export interface WarehouseDragProps {
   item: { id: string; [key: string]: any };
   content?: ReactNode;
   index: number;
@@ -19,7 +19,7 @@ export interface WarehouseDropProps {
   multiSelectTo?: (id: string) => void;
 }
 
-export const WarehouseDrop: FC<WarehouseDropProps> = ({
+export const WarehouseDrag: FC<WarehouseDragProps> = ({
   item,
   index,
   isProcessing = false,
@@ -101,4 +101,4 @@ export const WarehouseDrop: FC<WarehouseDropProps> = ({
   );
 };
 
-export default WarehouseDrop;
+export default WarehouseDrag;

@@ -6,8 +6,7 @@ import { WarehouseProvider } from 'context';
 export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
   return {
     props: {
-      ...(locale &&
-        (await serverSideTranslations(locale, ['common', 'footer']))),
+      ...(locale && (await serverSideTranslations(locale, ['common']))),
     },
   };
 };

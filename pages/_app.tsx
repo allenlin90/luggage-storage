@@ -1,14 +1,22 @@
+import type { AppProps } from 'next/app';
 import { useState } from 'react';
 import { DefaultSeo } from 'next-seo';
-import type { AppProps } from 'next/app';
-import { ThemeProvider } from '@mui/material';
 import { SessionProvider } from 'next-auth/react';
-import { appWithTranslation } from 'next-i18next';
 import { DefaultSeoConfig } from 'next-seo.config';
+import { ThemeProvider } from '@mui/material';
+import { appWithTranslation } from 'next-i18next';
 import { theme } from 'styles';
-import { RouteLoader, Layout, SessionChecker } from 'components';
-import { CssBaseline } from '@mui/material';
-import { RecoilRoot } from 'recoil';
+
+import dynamic from 'next/dynamic';
+const CssBaseline = dynamic(() => import('@mui/material/CssBaseline'));
+const SessionChecker = dynamic(
+  () => import('../components/common/SessionChecker')
+);
+const RecoilRootWrapper = dynamic(
+  () => import('../components/common/RecoilRoot')
+);
+const RouteLoader = dynamic(() => import('../components/common/RouteLoader'));
+const Layout = dynamic(() => import('../components/common/Layout/Layout'));
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const [refetchInterval, setRefetchInterval] = useState<number>(0);
@@ -24,13 +32,13 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
           <DefaultSeo {...DefaultSeoConfig} />
           <CssBaseline />
           <SessionChecker setter={setRefetchInterval} />
-          <RecoilRoot>
+          <RecoilRootWrapper>
             <RouteLoader>
               <Layout>
                 <Component {...pageProps} />
               </Layout>
             </RouteLoader>
-          </RecoilRoot>
+          </RecoilRootWrapper>
         </ThemeProvider>
       </SessionProvider>
     </>
