@@ -1,7 +1,9 @@
-import { GetServerSideProps, NextPage } from 'next';
+import type { ReactNode } from 'react';
+import type { GetServerSideProps } from 'next';
+import type { NextPageWithLayout } from '../_app';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { Seo, Warehouse } from 'components';
 import { WarehouseProvider } from 'context';
+import { Layout, Seo, Warehouse } from 'components';
 
 export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
   return {
@@ -11,7 +13,7 @@ export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
   };
 };
 
-export const WarehousePage: NextPage = () => {
+export const WarehousePage: NextPageWithLayout = () => {
   return (
     <>
       <Seo title='Warehouse' />
@@ -20,6 +22,10 @@ export const WarehousePage: NextPage = () => {
       </WarehouseProvider>
     </>
   );
+};
+
+WarehousePage.getLayout = (page: ReactNode) => {
+  return <Layout>{page}</Layout>;
 };
 
 export default WarehousePage;

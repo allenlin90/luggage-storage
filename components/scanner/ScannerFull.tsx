@@ -26,27 +26,20 @@ export interface CameraStarter {
 export interface ScannerFullProps {
   isScanning?: boolean;
   setIsScanning?: Dispatch<SetStateAction<boolean>>;
-  setIsStarting?: Dispatch<SetStateAction<boolean>>;
   setIsDenied?: Dispatch<SetStateAction<boolean>>;
-  readData?: Dispatch<SetStateAction<string>>;
 }
 
 export const ScannerFull: FC<ScannerFullProps> = ({
   isScanning = false,
   setIsScanning = () =>
     console.warn("no isScanning setter is given to 'ScannerFull'"),
-  setIsStarting = () =>
-    console.warn("no isStarting setter is given to 'ScannerFull'"),
   setIsDenied = () =>
     console.warn("no isDenied setter is given to 'ScannerFull'"),
-  readData = () =>
-    console.warn("no data state setter is given to 'ScannerFull'"),
 }) => {
   const { width, height } = useWindowSize();
   const { t } = useTranslation(['scanner', 'common']);
   const scannerRef = useRef<Html5Qrcode | null>(null);
   const [cameras, setCameras] = useState<Camera[]>([]);
-  const [openTorch, setOpenTorch] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [selectedCamera, setSelectedCamera] = useState<string>('');
 
@@ -62,7 +55,6 @@ export const ScannerFull: FC<ScannerFullProps> = ({
     async (scanner: Html5Qrcode | null, cameraId?: string) => {
       const onSuccess = (decodedText: string) => {
         console.log(decodedText);
-        readData(decodedText);
       };
 
       const onError = (errorText: string) => {
@@ -70,7 +62,6 @@ export const ScannerFull: FC<ScannerFullProps> = ({
       };
 
       try {
-        setIsStarting(true);
         setIsLoading(true);
         if (scanner) {
           if (scanner.getState() === 2) {
@@ -87,14 +78,13 @@ export const ScannerFull: FC<ScannerFullProps> = ({
 
           await scanner.start(camStarter, camConfig, onSuccess, onError);
         }
-        setIsStarting(false);
         setIsLoading(false);
       } catch (error: any) {
         console.log('something went wrong when starting camera');
         console.log(error.message || error);
       }
     },
-    [camConfig, readData, setIsStarting]
+    [camConfig]
   );
 
   const initScanner = useCallback(async () => {
@@ -120,33 +110,18 @@ export const ScannerFull: FC<ScannerFullProps> = ({
       if (error === 'NotAllowedError : Permission denied') {
         setIsScanning(false);
         setIsLoading(false);
-        setIsStarting(false);
         setIsDenied(true);
       }
     }
-  }, [startScanner, setIsScanning, setIsStarting, setIsLoading, setIsDenied]);
+  }, [startScanner, setIsScanning, setIsLoading, setIsDenied]);
 
   // init scanner with camera
   useEffect(() => {
+    console.log('render init');
     if (isScanning) {
       initScanner();
     }
-  }, [initScanner, isScanning]);
 
-  // switch between cameras
-  useEffect(() => {
-    startScanner(scannerRef.current, selectedCamera);
-  }, [startScanner, selectedCamera]);
-
-  // toggle torch (flash light)
-  useEffect(() => {
-    if (scannerRef.current?.getState() === 2) {
-      console.log('toggle torch to be added later');
-    }
-  }, [openTorch]);
-
-  // reset states when unmount
-  useEffect(() => {
     return () => {
       if (scannerRef.current && scannerRef.current.getState() === 2) {
         scannerRef.current
@@ -161,13 +136,15 @@ export const ScannerFull: FC<ScannerFullProps> = ({
       }
 
       setSelectedCamera('');
-      setIsStarting(false);
       setIsScanning(false);
-      setOpenTorch(false);
       setIsLoading(false);
     };
-    // eslint-disable-next-line
-  }, []);
+  }, [initScanner, isScanning, setSelectedCamera, setIsScanning, setIsLoading]);
+
+  // switch between cameras
+  useEffect(() => {
+    startScanner(scannerRef.current, selectedCamera);
+  }, [startScanner, selectedCamera]);
 
   return (
     <Backdrop

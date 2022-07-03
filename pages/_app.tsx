@@ -1,4 +1,6 @@
 import type { AppProps } from 'next/app';
+import type { NextPage } from 'next';
+import type { ReactElement } from 'react';
 import { useState } from 'react';
 import { DefaultSeo } from 'next-seo';
 import { SessionProvider } from 'next-auth/react';
@@ -16,10 +18,21 @@ const RecoilRootWrapper = dynamic(
   () => import('../components/common/RecoilRoot')
 );
 const RouteLoader = dynamic(() => import('../components/common/RouteLoader'));
-const Layout = dynamic(() => import('../components/common/Layout/Layout'));
 
-function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
+export type NextPageWithLayout = NextPage & {
+  getLayout?: (page: ReactElement) => ReactElement;
+};
+
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout;
+};
+
+function MyApp({
+  Component,
+  pageProps: { session, ...pageProps },
+}: AppPropsWithLayout) {
   const [refetchInterval, setRefetchInterval] = useState<number>(0);
+  const getLayout = Component.getLayout ?? ((page) => page);
 
   return (
     <>
@@ -34,9 +47,9 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
           <SessionChecker setter={setRefetchInterval} />
           <RecoilRootWrapper>
             <RouteLoader>
-              <Layout>
-                <Component {...pageProps} />
-              </Layout>
+              {/* <Layout> */}
+              {getLayout(<Component {...pageProps} />)}
+              {/* </Layout> */}
             </RouteLoader>
           </RecoilRootWrapper>
         </ThemeProvider>

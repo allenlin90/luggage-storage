@@ -1,27 +1,34 @@
 import { FC, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
-import { Box, Button, IconButton, Typography } from '@mui/material';
+import { Box, Button, IconButton, styled, Typography } from '@mui/material';
 
 import dynamic from 'next/dynamic';
-const ScannerFull = dynamic(() => import('./ScannerFull'));
+const ScannerFull = dynamic(() => import('./ScannerFull'), { ssr: false });
 const QrCodeScannerIcon = dynamic(
-  () => import('@mui/icons-material/QrCodeScanner')
+  () => import('@mui/icons-material/QrCodeScanner'),
+  { ssr: false }
 );
 
+const Container = styled(Box)(() => ({
+  width: '100%',
+  height: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+}));
+
 export const ScannerPanel: FC = () => {
+  console.log('panel render');
   const { t } = useTranslation(['scanner', 'common']);
   const router = useRouter();
-  const [data, setData] = useState<string>('');
   const [isScanning, setIsScanning] = useState<boolean>(false);
-  const [isStarting, setIsStarting] = useState<boolean>(false);
   const [isDenied, setIsDenied] = useState<boolean>(false);
 
   useEffect(() => {
     return () => {
-      setData('');
       setIsScanning(false);
-      setIsStarting(false);
       setIsDenied(false);
     };
   }, []);
@@ -31,20 +38,9 @@ export const ScannerPanel: FC = () => {
       <ScannerFull
         isScanning={isScanning}
         setIsScanning={setIsScanning}
-        setIsStarting={setIsStarting}
         setIsDenied={setIsDenied}
-        readData={setData}
       />
-      <Box
-        sx={{
-          width: '100%',
-          height: '100%',
-          display: 'inline-flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
+      <Container>
         {isDenied ? (
           <Box>
             <Typography variant='body1'>{t('title.cameraDenied')}</Typography>
@@ -54,7 +50,7 @@ export const ScannerPanel: FC = () => {
           <>
             <IconButton
               size='large'
-              disabled={isStarting}
+              disabled={isScanning}
               sx={{
                 width: '100%',
                 height: '100%',
@@ -62,13 +58,7 @@ export const ScannerPanel: FC = () => {
                 maxHeight: '350px',
               }}
               onClick={() => {
-                setIsScanning((oldVal) => {
-                  if (!oldVal) {
-                    setIsStarting(true);
-                  }
-
-                  return !oldVal;
-                });
+                setIsScanning((oldVal) => !oldVal);
               }}
             >
               <QrCodeScannerIcon
@@ -88,7 +78,7 @@ export const ScannerPanel: FC = () => {
             </Typography>
           </>
         )}
-      </Box>
+      </Container>
     </>
   );
 };

@@ -1,6 +1,8 @@
-import { NextPage, GetServerSideProps } from 'next';
+import type { ReactNode } from 'react';
+import type { GetServerSideProps } from 'next';
+import type { NextPageWithLayout } from './_app';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { Seo, ScannerPanel } from 'components';
+import { Seo, ScannerPanel, Layout } from 'components';
 
 export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
   return {
@@ -11,13 +13,17 @@ export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
   };
 };
 
-export const ScannerPage: NextPage = () => {
+export const ScannerPage: NextPageWithLayout = () => {
   return (
     <>
       <Seo title='Scanner' />
       <ScannerPanel />
     </>
   );
+};
+
+ScannerPage.getLayout = (page: ReactNode) => {
+  return <Layout>{page}</Layout>;
 };
 
 export default ScannerPage;
