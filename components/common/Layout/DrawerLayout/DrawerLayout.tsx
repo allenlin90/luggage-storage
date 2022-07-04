@@ -1,12 +1,10 @@
 import type { FC, ReactNode } from 'react';
 import { useCallback, useEffect, useState } from 'react';
 import { useWindowSize } from 'react-use';
-
-import dynamic from 'next/dynamic';
-const DrawerHeader = dynamic(() => import('./DrawerHeader'));
-const DrawerMain = dynamic(() => import('./DrawerMain'));
-const DrawerTopNav = dynamic(() => import('./DrawerTopNav'));
-const DrawerSideNav = dynamic(() => import('./DrawerSideNav/DrawerSideNav'));
+import DrawerHeader from './DrawerHeader';
+import DrawerTopNav from './DrawerTopNav';
+import DrawerSideNav from './DrawerSideNav/DrawerSideNav';
+import DrawerMain from './DrawerMain';
 
 export interface DrawerLayout {
   children: ReactNode;

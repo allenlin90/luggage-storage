@@ -1,9 +1,9 @@
 import type { FC, ReactNode } from 'react';
 import { useSession } from 'next-auth/react';
+import Box from '@mui/material/Box';
 
 import dynamic from 'next/dynamic';
 const DrawerLayout = dynamic(() => import('./DrawerLayout/DrawerLayout'));
-const Box = dynamic(() => import('@mui/material/Box'));
 
 interface LayoutProps {
   children?: ReactNode;

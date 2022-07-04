@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import Link from 'next/link';
 import SettingsIcon from '@mui/icons-material/SettingsOutlined';
 import { ListItem, ListItemIcon, ListItemText } from '@mui/material';

@@ -1,13 +1,13 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import { useTranslation } from 'next-i18next';
 import { Drawer, Divider } from '@mui/material';
-import {
-  BranchSelect,
-  FlexSpacer,
-  DrawerSignout,
-  DrawerSideHead,
-  DrawerSideLinks,
-} from 'components';
+import FlexSpacer from 'components/common/FlexSpacer';
+import DrawerSignout from './DrawerSignout';
+import DrawerSideHead from './DrawerSideHead';
+import DrawerSideLinks from './DrawerSideLinks';
+
+import dynamic from 'next/dynamic';
+const BranchSelect = dynamic(() => import('../../../BranchSelect'));
 
 export interface DrawerSideNav {
   screenWidth?: number;

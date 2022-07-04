@@ -1,19 +1,20 @@
+import type { FC, ReactNode } from 'react';
 import Link from 'next/link';
-import { FC, ReactNode, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
+import WarehouseIcon from '@mui/icons-material/WarehouseOutlined';
+import QrCodeScannerIcon from '@mui/icons-material/QrCodeScannerOutlined';
 import {
+  Divider,
   List,
   ListItem,
   ListItemText,
   ListItemIcon,
   Typography,
 } from '@mui/material';
-import WarehouseIcon from '@mui/icons-material/WarehouseOutlined';
-import QrCodeScannerIcon from '@mui/icons-material/QrCodeScannerOutlined';
-import { sideLinks } from 'utils';
-import { DrawerSettings } from 'components';
-import { Divider } from '@mui/material';
+import sideLinks from 'utils/constants/sideLinks';
+import DrawerSettings from './DrawerSettings';
 
 const linkIcons: { [key: string]: ReactNode } = {
   warehouse: <WarehouseIcon />,
