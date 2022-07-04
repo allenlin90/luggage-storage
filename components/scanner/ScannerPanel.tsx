@@ -20,7 +20,6 @@ const Container = styled(Box)(() => ({
 }));
 
 export const ScannerPanel: FC = () => {
-  console.log('panel render');
   const { t } = useTranslation(['scanner', 'common']);
   const router = useRouter();
   const [isScanning, setIsScanning] = useState<boolean>(false);
