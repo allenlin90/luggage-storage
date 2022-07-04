@@ -1,4 +1,9 @@
-import { Dispatch, FC, SetStateAction, useState } from 'react';
+import type { Dispatch, FC, SetStateAction } from 'react';
+import { Camera } from 'types';
+import { useState } from 'react';
+import { useTranslation } from 'next-i18next';
+import CameraIcon from '@mui/icons-material/CameraAltOutlined';
+import ImageIcon from '@mui/icons-material/Image';
 import {
   ButtonGroup,
   IconButton,
@@ -8,10 +13,6 @@ import {
   Popover,
   Typography,
 } from '@mui/material';
-import CameraIcon from '@mui/icons-material/CameraAltOutlined';
-import ImageIcon from '@mui/icons-material/Image';
-import { Camera } from 'types';
-import { useTranslation } from 'next-i18next';
 
 export interface ScannerButtonsProps {
   setSelectedCamera?: Dispatch<SetStateAction<string>>;

@@ -5,19 +5,16 @@ import { useState } from 'react';
 import { DefaultSeo } from 'next-seo';
 import { SessionProvider } from 'next-auth/react';
 import { DefaultSeoConfig } from 'next-seo.config';
-import { ThemeProvider } from '@mui/material';
+import { ThemeProvider, CssBaseline } from '@mui/material';
 import { appWithTranslation } from 'next-i18next';
 import { theme } from 'styles';
 
 import dynamic from 'next/dynamic';
-const CssBaseline = dynamic(() => import('@mui/material/CssBaseline'));
+const RecoilRoot = dynamic(() => import('../components/common/RecoilRoot'));
+const RouteLoader = dynamic(() => import('../components/common/RouteLoader'));
 const SessionChecker = dynamic(
   () => import('../components/common/SessionChecker')
 );
-const RecoilRootWrapper = dynamic(
-  () => import('../components/common/RecoilRoot')
-);
-const RouteLoader = dynamic(() => import('../components/common/RouteLoader'));
 
 export type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactElement;
@@ -45,13 +42,13 @@ function MyApp({
           <DefaultSeo {...DefaultSeoConfig} />
           <CssBaseline />
           <SessionChecker setter={setRefetchInterval} />
-          <RecoilRootWrapper>
+          <RecoilRoot>
             <RouteLoader>
               {/* <Layout> */}
               {getLayout(<Component {...pageProps} />)}
               {/* </Layout> */}
             </RouteLoader>
-          </RecoilRootWrapper>
+          </RecoilRoot>
         </ThemeProvider>
       </SessionProvider>
     </>

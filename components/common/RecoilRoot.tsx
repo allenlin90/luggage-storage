@@ -1,10 +1,8 @@
-import { FC, ReactNode } from 'react';
-import { RecoilRoot } from 'recoil';
+import type { FC, ReactNode } from 'react';
+import { RecoilRoot as RecoilRootLib } from 'recoil';
 
-export const RecoilRootWrapper: FC<{ children: ReactNode }> = ({
-  children,
-}) => {
-  return <RecoilRoot>{children}</RecoilRoot>;
+export const RecoilRoot: FC<{ children: ReactNode }> = ({ children }) => {
+  return <RecoilRootLib>{children}</RecoilRootLib>;
 };
 
-export default RecoilRootWrapper;
+export default RecoilRoot;

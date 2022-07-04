@@ -1,8 +1,18 @@
-import { FC, useState, useTransition } from 'react';
+import type { FC } from 'react';
+import type {
+  DragStart,
+  DropResult,
+  DragDropContextProps,
+} from 'react-beautiful-dnd';
+import { useState, useTransition } from 'react';
 import { useWarehouse } from 'context';
-import { DragDropContext, DragStart, DropResult } from 'react-beautiful-dnd';
 import { Box } from '@mui/material';
 import { WarehouseDrop, WarehouseDrag } from 'components';
+
+import dynamic from 'next/dynamic';
+const DragDropContext = dynamic<DragDropContextProps>(() =>
+  import('react-beautiful-dnd').then((mod) => mod.DragDropContext)
+);
 
 export const WarehouseDnD: FC = () => {
   const [warehouse] = useWarehouse();

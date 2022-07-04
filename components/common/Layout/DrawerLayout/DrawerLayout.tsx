@@ -1,5 +1,6 @@
+import type { FC, ReactNode } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useWindowSize } from 'react-use';
-import { FC, ReactNode, useCallback, useEffect, useState } from 'react';
 
 import dynamic from 'next/dynamic';
 const DrawerHeader = dynamic(() => import('./DrawerHeader'));

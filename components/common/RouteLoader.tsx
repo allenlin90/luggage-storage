@@ -1,7 +1,8 @@
+import type { FC, ReactNode } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { FC, ReactNode, useEffect, useState } from 'react';
-import { PageLoader } from 'components';
 import { Box, Fade } from '@mui/material';
+import { PageLoader } from 'components';
 
 export const RouteLoader: FC<{ children: ReactNode }> = ({ children }) => {
   const { events, asPath } = useRouter();

@@ -1,4 +1,5 @@
-import { FC, useState, useEffect } from 'react';
+import type { FC } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import MuiAppBar from '@mui/material/AppBar';
@@ -62,7 +63,7 @@ export const DrawerTopNav: FC<DrawerTopNavProps> = ({
         >
           <MenuIcon />
         </IconButton>
-        <Typography variant='h1' sx={{ fontSize: '2rem', fontWeight: 600 }}>
+        <Typography fontSize='2rem' fontWeight={600}>
           {t(`links.${onPath}`)}
         </Typography>
         <FlexSpacer />

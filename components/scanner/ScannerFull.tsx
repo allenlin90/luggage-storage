@@ -1,20 +1,17 @@
-import {
-  FC,
-  useEffect,
-  useState,
-  useMemo,
-  useCallback,
-  useRef,
-  Dispatch,
-  SetStateAction,
-} from 'react';
-import { Camera } from 'types';
+import type { FC, Dispatch, SetStateAction } from 'react';
+import type { Camera } from 'types';
+import type { Html5Qrcode } from 'html5-qrcode';
+import { useEffect, useState, useMemo, useCallback, useRef } from 'react';
 import { useWindowSize } from 'react-use';
-import { Html5Qrcode } from 'html5-qrcode';
 import { useTranslation } from 'next-i18next';
 import { Box, Backdrop, IconButton, Typography } from '@mui/material';
 import CancelIcon from '@mui/icons-material/Cancel';
-import { Loader, ScannerButtons } from 'components';
+
+import dynamic from 'next/dynamic';
+const Loader = dynamic(() => import('components/common/Loader'));
+const ScannerButtons = dynamic(
+  () => import('components/scanner/ScannerButtons')
+);
 
 export type FacingMode = 'environment' | 'user';
 
@@ -89,6 +86,7 @@ export const ScannerFull: FC<ScannerFullProps> = ({
 
   const initScanner = useCallback(async () => {
     try {
+      const { Html5Qrcode } = await import('html5-qrcode');
       const cams = await Html5Qrcode.getCameras();
       if (cams.length) {
         setCameras(cams);

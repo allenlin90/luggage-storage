@@ -1,12 +1,5 @@
-import {
-  createContext,
-  Dispatch,
-  FC,
-  ReactNode,
-  SetStateAction,
-  useContext,
-  useState,
-} from 'react';
+import type { FC, Dispatch, SetStateAction, ReactNode } from 'react';
+import { createContext, useContext, useState } from 'react';
 
 const WarehouseContext = createContext<
   [warehouse: any, setWarehouse: Dispatch<SetStateAction<any>>] | null

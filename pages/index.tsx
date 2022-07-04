@@ -1,7 +1,7 @@
+import type { NextPage } from 'next';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import type { NextPage } from 'next';
-import { Seo } from 'components';
+import Seo from 'components/common/Seo';
 
 const HomePage: NextPage = () => {
   const { push } = useRouter();

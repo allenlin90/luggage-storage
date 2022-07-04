@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import { Box, styled } from '@mui/material';
 
 const Container = styled(Box)(() => ({

@@ -1,7 +1,21 @@
-import { FC, useEffect, useState } from 'react';
+import type { FC } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
-import { Box, Button, IconButton, styled, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  IconButton as MuiIconButton,
+  styled,
+  Typography,
+} from '@mui/material';
+
+const IconButton = styled(MuiIconButton)(() => ({
+  width: '100%',
+  height: '100%',
+  maxWidth: '350px',
+  maxHeight: '350px',
+}));
 
 import dynamic from 'next/dynamic';
 const ScannerFull = dynamic(() => import('./ScannerFull'), { ssr: false });
@@ -50,12 +64,7 @@ export const ScannerPanel: FC = () => {
             <IconButton
               size='large'
               disabled={isScanning}
-              sx={{
-                width: '100%',
-                height: '100%',
-                maxWidth: '350px',
-                maxHeight: '350px',
-              }}
+              aria-label='qr-reader-button'
               onClick={() => {
                 setIsScanning((oldVal) => !oldVal);
               }}
@@ -67,14 +76,7 @@ export const ScannerPanel: FC = () => {
                 }}
               />
             </IconButton>
-            <Typography
-              variant='h1'
-              sx={{
-                color: (theme) => theme.palette.darkGrey.main,
-              }}
-            >
-              {t('title.tapToScan')}
-            </Typography>
+            <Typography>{t('title.tapToScan')}</Typography>
           </>
         )}
       </Container>

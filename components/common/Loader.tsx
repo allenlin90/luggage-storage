@@ -1,4 +1,5 @@
-import { FC } from 'react';
+import type { FC } from 'react';
+import { useTranslation } from 'next-i18next';
 import {
   Box,
   BoxProps,
@@ -7,7 +8,6 @@ import {
   Typography,
   TypographyProps,
 } from '@mui/material';
-import { useTranslation } from 'next-i18next';
 
 export interface LoaderProps {
   CircularProps?: CircularProgressProps;

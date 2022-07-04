@@ -1,8 +1,8 @@
-import { useSession, signIn, signOut } from 'next-auth/react';
-import { useEffect } from 'react';
-import { FC, Dispatch, SetStateAction } from 'react';
-import { useRouter } from 'next/router';
+import type { FC, Dispatch, SetStateAction } from 'react';
 import { SessionToken } from 'types';
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { useSession, signIn, signOut } from 'next-auth/react';
 
 export interface SessionCheckerProps {
   setter: Dispatch<SetStateAction<number>>;

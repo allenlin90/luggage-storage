@@ -1,9 +1,9 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import { useTranslation } from 'next-i18next';
-import { Select, MenuItem, Typography } from '@mui/material';
-import { branches } from 'utils';
 import { selectedBranchState } from 'states';
 import { useRecoilState } from 'recoil';
+import { branches } from 'utils';
+import { Select, MenuItem, Typography } from '@mui/material';
 
 export interface BranchSelectProps {
   isMobile?: boolean;

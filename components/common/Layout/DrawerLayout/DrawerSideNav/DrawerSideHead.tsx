@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import Image from 'next/image';
-import { Box, Typography } from '@mui/material';
+import { Box, styled, Typography } from '@mui/material';
 
 export interface DrawerSideHeadProps {
   placeholder?: string;
@@ -8,18 +8,27 @@ export interface DrawerSideHeadProps {
   drawerWidth?: string;
 }
 
+const Container = styled(Box)(() => ({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+}));
+
+const AppLogo = styled(Typography)(() => ({
+  fontSize: '2rem',
+  fontWeight: 600,
+  textAlign: 'center',
+}));
+
 export const DrawerSideHead: FC<DrawerSideHeadProps> = ({
   placeholder = 'Warehouse',
   imgSrc,
   drawerWidth = '16rem',
 }) => {
   return (
-    <Box
+    <Container
       sx={{
         height: { xs: '56px', sm: '64px' },
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
       }}
     >
       {imgSrc ? (
@@ -31,18 +40,9 @@ export const DrawerSideHead: FC<DrawerSideHeadProps> = ({
           alt='logo'
         />
       ) : (
-        <Typography
-          variant='h1'
-          sx={{
-            fontSize: '2rem',
-            fontWeight: 600,
-            textAlign: 'center',
-          }}
-        >
-          {placeholder}
-        </Typography>
+        <AppLogo variant='h1'>{placeholder}</AppLogo>
       )}
-    </Box>
+    </Container>
   );
 };
 

@@ -1,9 +1,9 @@
-import { FC } from 'react';
+import type { FC } from 'react';
+import type { OpenGraph } from 'next-seo/lib/types';
 import { NextSeo } from 'next-seo';
-import { OpenGraph } from 'next-seo/lib/types';
 import { useRouter } from 'next/router';
 
-interface SeoProps {
+export interface SeoProps {
   title: string;
   description?: string;
   image?: string;
@@ -37,3 +37,5 @@ export const Seo: FC<SeoProps> = ({
     />
   );
 };
+
+export default Seo;
