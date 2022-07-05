@@ -1,2 +1,2 @@
-export * from './ScannerFull';
+export * from './Scanner';
 export * from './ScannerPanel';
