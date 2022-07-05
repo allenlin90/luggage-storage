@@ -1,6 +1,7 @@
-import { FC, ReactNode, KeyboardEvent, MouseEvent } from 'react';
+import type { FC, ReactNode, KeyboardEvent, MouseEvent } from 'react';
+import type { DraggableStateSnapshot } from 'react-beautiful-dnd';
+import { Draggable } from 'react-beautiful-dnd';
 import EditIcon from '@mui/icons-material/Edit';
-import { Draggable, DraggableStateSnapshot } from 'react-beautiful-dnd';
 import {
   ListItem,
   ListItemText,
@@ -27,7 +28,6 @@ export const WarehouseDrag: FC<WarehouseDragProps> = ({
   toggleSelection,
   toggleSelectionInGroup,
   multiSelectTo,
-  ...props
 }) => {
   const performAction = (event: MouseEvent | KeyboardEvent) => {
     if (wasToggleInSelectionGroupKeyUsed(event) && toggleSelectionInGroup) {
