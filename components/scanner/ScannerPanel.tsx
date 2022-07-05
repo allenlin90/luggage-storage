@@ -18,7 +18,9 @@ const IconButton = styled(MuiIconButton)(() => ({
 }));
 
 import dynamic from 'next/dynamic';
-const ScannerFull = dynamic(() => import('./ScannerFull'), { ssr: false });
+const ScannerFull = dynamic(() => import('./ScannerFull/Scanner'), {
+  ssr: false,
+});
 const QrCodeScannerIcon = dynamic(
   () => import('@mui/icons-material/QrCodeScanner'),
   { ssr: false }

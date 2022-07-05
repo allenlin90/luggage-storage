@@ -4,14 +4,26 @@ import type { Html5Qrcode } from 'html5-qrcode';
 import { useEffect, useState, useMemo, useCallback, useRef } from 'react';
 import { useWindowSize } from 'react-use';
 import { useTranslation } from 'next-i18next';
-import { Box, Backdrop, IconButton, Typography } from '@mui/material';
+import { Box, Backdrop, IconButton, styled } from '@mui/material';
 import CancelIcon from '@mui/icons-material/Cancel';
+import ScannerTitle from './ScannerTitle';
 
 import dynamic from 'next/dynamic';
 const Loader = dynamic(() => import('components/common/Loader'));
-const ScannerButtons = dynamic(
-  () => import('components/scanner/ScannerButtons')
-);
+const ScannerButtons = dynamic(() => import('./ScannerButtons'));
+
+const ButtonWrapper = styled(Box)(({ theme }) => ({
+  position: 'absolute',
+  bottom: 45,
+  left: '50%',
+  transform: 'translateX(-50%)',
+  zIndex: theme.zIndex.drawer + 2,
+  width: '100%',
+  maxWidth: '500px',
+  padding: '1.5rem',
+  display: 'flex',
+  justifyContent: 'center',
+}));
 
 export type FacingMode = 'environment' | 'user';
 
@@ -153,20 +165,7 @@ export const ScannerFull: FC<ScannerFullProps> = ({
         zIndex: (theme) => theme.zIndex.drawer + 1,
       }}
     >
-      <Typography
-        variant='h2'
-        sx={{
-          position: 'absolute',
-          top: 100,
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: '100%',
-          zIndex: (theme) => theme.zIndex.drawer + 2,
-          color: (theme) => theme.palette.white.main,
-        }}
-      >
-        {t('title.scanQrCode')}
-      </Typography>
+      <ScannerTitle title={t('title.scanQrCode')} />
       {isLoading && (
         <Loader
           BoxProps={{
@@ -187,7 +186,7 @@ export const ScannerFull: FC<ScannerFullProps> = ({
           text={`${t('hint.starting', { ns: 'common' })}...`}
         />
       )}
-      <Box id='reader' sx={{ width: '100%', height: '100%' }} />
+      <Box id='reader' width='100%' height='100%' />
       <IconButton
         sx={{
           position: 'absolute',
@@ -206,25 +205,12 @@ export const ScannerFull: FC<ScannerFullProps> = ({
       >
         <CancelIcon sx={{ color: (theme) => theme.palette.white.main }} />
       </IconButton>
-      <Box
-        sx={{
-          position: 'absolute',
-          bottom: 45,
-          left: '50%',
-          transform: 'translateX(-50%)',
-          zIndex: (theme) => theme.zIndex.drawer + 2,
-          width: '100%',
-          maxWidth: '500px',
-          padding: '1.5rem',
-          display: 'flex',
-          justifyContent: 'center',
-        }}
-      >
+      <ButtonWrapper>
         <ScannerButtons
           cameras={cameras}
           setSelectedCamera={setSelectedCamera}
         />
-      </Box>
+      </ButtonWrapper>
     </Backdrop>
   );
 };

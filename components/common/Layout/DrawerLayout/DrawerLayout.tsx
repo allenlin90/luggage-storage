@@ -55,10 +55,6 @@ export const DrawerLayout: FC<DrawerLayout> = ({ children }) => {
         open={openDrawer}
         drawerWidth={drawerWidth}
         isMobile={isMobile}
-        sx={{
-          height: { xs: `calc(100vh - 56px)`, sm: 'calc(100vh - 64px)' },
-          overflowY: 'auto',
-        }}
       >
         {children}
       </DrawerMain>
