@@ -109,11 +109,19 @@ export const Scanner: FC<ScannerProps> = ({
       console.log('something went wrong when init qr reader');
       console.warn(error);
       if (error === 'NotAllowedError : Permission denied') {
+        setIsScanning(false);
         setIsLoading(false);
         setIsDenied(true);
       }
     }
-  }, [startScanner, setIsLoading, setIsDenied, selectedCamera, setCameras]);
+  }, [
+    startScanner,
+    setIsScanning,
+    setIsLoading,
+    setIsDenied,
+    selectedCamera,
+    setCameras,
+  ]);
 
   // init scanner with camera
   useEffect(() => {
@@ -139,7 +147,7 @@ export const Scanner: FC<ScannerProps> = ({
       setIsDenied(false);
       setIsLoading(false);
     };
-  }, [setSelectedCamera, setIsDenied, setIsLoading]);
+  }, [setIsDenied, setIsLoading]);
 
   // switch between cameras
   useEffect(() => {

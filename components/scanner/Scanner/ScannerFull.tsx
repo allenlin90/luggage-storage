@@ -125,7 +125,7 @@ export const ScannerFull: FC<ScannerFullProps> = ({
           scannerRef.current = null;
         }
         scannerRef.current = scanner;
-        startScanner(scanner);
+        startScanner(scanner, selectedCamera);
         return;
       }
 
@@ -139,7 +139,14 @@ export const ScannerFull: FC<ScannerFullProps> = ({
         setIsDenied(true);
       }
     }
-  }, [startScanner, setIsScanning, setIsLoading, setIsDenied, setCameras]);
+  }, [
+    startScanner,
+    setIsScanning,
+    setIsLoading,
+    setIsDenied,
+    selectedCamera,
+    setCameras,
+  ]);
 
   // init scanner with camera
   useEffect(() => {
@@ -165,7 +172,7 @@ export const ScannerFull: FC<ScannerFullProps> = ({
       setIsScanning(false);
       setIsLoading(false);
     };
-  }, [setSelectedCamera, setIsScanning, setIsLoading]);
+  }, [setIsScanning, setIsLoading]);
 
   // switch between cameras
   useEffect(() => {
