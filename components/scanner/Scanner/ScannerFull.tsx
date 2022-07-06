@@ -1,15 +1,18 @@
 import type { FC, Dispatch, SetStateAction } from 'react';
-import type { Camera } from 'types';
 import type { Html5Qrcode } from 'html5-qrcode';
 import { useEffect, useState, useMemo, useCallback, useRef } from 'react';
 import { useWindowSize } from 'react-use';
 import { useTranslation } from 'next-i18next';
+import { isMobile } from 'react-device-detect';
+import { camerasState, selectedCameraState } from 'states';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { Box, Backdrop, IconButton, styled } from '@mui/material';
 import CancelIcon from '@mui/icons-material/Cancel';
 import ScannerTitle from './ScannerTitle';
 
 import dynamic from 'next/dynamic';
 const Loader = dynamic(() => import('components/common/Loader'));
+const ScannerFullButtons = dynamic(() => import('./ScannerFullButtons'));
 
 const ButtonWrapper = styled(Box)(({ theme }) => ({
   position: 'absolute',
@@ -47,15 +50,24 @@ export const ScannerFull: FC<ScannerFullProps> = ({
   const { width, height } = useWindowSize();
   const { t } = useTranslation(['scanner', 'common']);
   const scannerRef = useRef<Html5Qrcode | null>(null);
-  const [cameras, setCameras] = useState<Camera[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [selectedCamera, setSelectedCamera] = useState<string>('');
+  const setCameras = useSetRecoilState(camerasState);
+  const [selectedCamera, setSelectedCamera] =
+    useRecoilState(selectedCameraState);
 
   const camConfig = useMemo(() => {
+    const minWidth = Math.min(height, width);
+    const ratio = 2 / 3;
+    const aspectRatio = isMobile
+      ? Math.ceil((height / width) * 100) / 100
+      : width / height;
+    const qrbox = isMobile
+      ? { width: minWidth * ratio, height: minWidth * ratio }
+      : 300;
     return {
       fps: 2,
-      qrbox: width > 600 ? 250 : 200,
-      aspectRatio: width / height,
+      qrbox,
+      aspectRatio,
     };
   }, [width, height]);
 
@@ -127,7 +139,7 @@ export const ScannerFull: FC<ScannerFullProps> = ({
         setIsDenied(true);
       }
     }
-  }, [startScanner, setIsScanning, setIsLoading, setIsDenied]);
+  }, [startScanner, setIsScanning, setIsLoading, setIsDenied, setCameras]);
 
   // init scanner with camera
   useEffect(() => {
@@ -150,7 +162,6 @@ export const ScannerFull: FC<ScannerFullProps> = ({
           });
       }
 
-      setSelectedCamera('');
       setIsScanning(false);
       setIsLoading(false);
     };
@@ -167,6 +178,10 @@ export const ScannerFull: FC<ScannerFullProps> = ({
       sx={{
         backdropFilter: 'blur(4px)',
         zIndex: (theme) => theme.zIndex.drawer + 1,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
       }}
     >
       <ScannerTitle title={t('title.scanQrCode')} />
@@ -190,15 +205,7 @@ export const ScannerFull: FC<ScannerFullProps> = ({
           text={`${t('hint.starting', { ns: 'common' })}...`}
         />
       )}
-      <Box
-        id='reader'
-        width='100%'
-        height='100%'
-        sx={{
-          maxWidth: '350px',
-          maxHeight: '350px',
-        }}
-      />
+      <Box id='reader' sx={{ width: '100%', height: '100%' }} />
       <IconButton
         sx={{
           position: 'absolute',
@@ -218,90 +225,10 @@ export const ScannerFull: FC<ScannerFullProps> = ({
         <CancelIcon sx={{ color: (theme) => theme.palette.white.main }} />
       </IconButton>
       <ButtonWrapper>
-        <ScannerButtons
-          cameras={cameras}
-          setSelectedCamera={setSelectedCamera}
-        />
+        <ScannerFullButtons />
       </ButtonWrapper>
     </Backdrop>
   );
 };
 
 export default ScannerFull;
-
-import CameraIcon from '@mui/icons-material/CameraAltOutlined';
-import ImageIcon from '@mui/icons-material/Image';
-import {
-  ButtonGroup,
-  MenuItem,
-  MenuList,
-  Paper,
-  Popover,
-  Typography,
-} from '@mui/material';
-
-export interface ScannerButtonsProps {
-  setSelectedCamera?: Dispatch<SetStateAction<string>>;
-  cameras?: Camera[];
-}
-
-export const ScannerButtons: FC<ScannerButtonsProps> = ({
-  setSelectedCamera = () =>
-    console.warn("no camera setter is given to 'ScannerButtons'"),
-
-  cameras = [],
-}) => {
-  const { t } = useTranslation('scanner');
-  const [open, setOpen] = useState<boolean>(false);
-
-  return (
-    <ButtonGroup
-      size='small'
-      variant='contained'
-      sx={{
-        backgroundColor: (theme) => theme.palette.common.white,
-        opacity: '0.5',
-      }}
-    >
-      <IconButton>
-        <ImageIcon />
-      </IconButton>
-      <IconButton onClick={() => setOpen(true)}>
-        <CameraIcon />
-      </IconButton>
-      <Popover
-        open={open}
-        onClose={() => setOpen(false)}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        transformOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-      >
-        <Paper>
-          <Typography variant='h2' sx={{ paddingTop: '1rem' }}>
-            {t('title.switchCamera')}
-          </Typography>
-          <MenuList>
-            {cameras.map(({ id, label }) => {
-              return (
-                <MenuItem
-                  key={id}
-                  onClick={() => {
-                    setSelectedCamera(id);
-                    setOpen(false);
-                  }}
-                >
-                  {label}
-                </MenuItem>
-              );
-            })}
-          </MenuList>
-        </Paper>
-      </Popover>
-    </ButtonGroup>
-  );
-};
