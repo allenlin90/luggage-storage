@@ -5,27 +5,33 @@ import { useWindowSize } from 'react-use';
 import { useTranslation } from 'next-i18next';
 import { isMobile } from 'react-device-detect';
 import { camerasState, selectedCameraState } from 'states';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { Box, Backdrop, IconButton, styled } from '@mui/material';
 import CancelIcon from '@mui/icons-material/Cancel';
-import ScannerTitle from './ScannerTitle';
 
 import dynamic from 'next/dynamic';
 const Loader = dynamic(() => import('components/common/Loader'));
 const ScannerFullButtons = dynamic(() => import('./ScannerFullButtons'));
+const ScannerTitle = dynamic(() => import('./ScannerTitle'));
 
-const ButtonWrapper = styled(Box)(({ theme }) => ({
-  position: 'absolute',
-  bottom: 45,
-  left: '50%',
-  transform: 'translateX(-50%)',
-  zIndex: theme.zIndex.drawer + 2,
-  width: '100%',
-  maxWidth: '500px',
-  padding: '1.5rem',
-  display: 'flex',
-  justifyContent: 'center',
-}));
+const ButtonWrapper = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'minWidth' && prop !== 'isMobile',
+})<{ minWidth?: number; isMobile?: boolean }>(
+  ({ theme, minWidth, isMobile = true }) => ({
+    position: 'absolute',
+    bottom: 45,
+    left: '50%',
+    transform: 'translateX(-50%)',
+    zIndex: theme.zIndex.drawer + 2,
+    width: isMobile
+      ? 300
+      : `calc(${minWidth ? `${minWidth}px` : '100%'} * (2 / 3))`,
+    maxWidth: '500px',
+    padding: '1.5rem 0',
+    display: 'flex',
+    justifyContent: 'center',
+  })
+);
 
 export type FacingMode = 'environment' | 'user';
 
@@ -52,9 +58,9 @@ export const ScannerFull: FC<ScannerFullProps> = ({
   const scannerRef = useRef<Html5Qrcode | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const setCameras = useSetRecoilState(camerasState);
-  const [selectedCamera, setSelectedCamera] =
-    useRecoilState(selectedCameraState);
+  const selectedCamera = useRecoilValue(selectedCameraState);
 
+  const minWidth = useMemo(() => Math.min(width, height), [width, height]);
   const camConfig = useMemo(() => {
     const minWidth = Math.min(height, width);
     const ratio = 2 / 3;
@@ -120,7 +126,9 @@ export const ScannerFull: FC<ScannerFullProps> = ({
         setCameras(cams);
         const scanner = new Html5Qrcode('reader');
         if (scannerRef.current) {
-          await scannerRef.current.stop();
+          if (scannerRef.current.getState() === 2) {
+            await scannerRef.current.stop();
+          }
           scannerRef.current.clear();
           scannerRef.current = null;
         }
@@ -172,7 +180,8 @@ export const ScannerFull: FC<ScannerFullProps> = ({
       setIsScanning(false);
       setIsLoading(false);
     };
-  }, [setIsScanning, setIsLoading]);
+    // eslint-disable-next-line
+  }, []);
 
   // switch between cameras
   useEffect(() => {
@@ -231,8 +240,8 @@ export const ScannerFull: FC<ScannerFullProps> = ({
       >
         <CancelIcon sx={{ color: (theme) => theme.palette.white.main }} />
       </IconButton>
-      <ButtonWrapper>
-        <ScannerFullButtons />
+      <ButtonWrapper minWidth={minWidth}>
+        <ScannerFullButtons isLoading={isLoading} />
       </ButtonWrapper>
     </Backdrop>
   );

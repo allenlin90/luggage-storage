@@ -1,74 +1,49 @@
 import type { FC } from 'react';
-import { useState } from 'react';
-import { useTranslation } from 'next-i18next';
 import { camerasState, selectedCameraState } from 'states';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
-import CameraIcon from '@mui/icons-material/CameraAltOutlined';
+import { useRecoilValue, useRecoilState } from 'recoil';
 import ImageIcon from '@mui/icons-material/Image';
-import {
-  ButtonGroup,
-  MenuItem,
-  MenuList,
-  Paper,
-  Popover,
-  Typography,
-  IconButton,
-} from '@mui/material';
+import { ButtonGroup, MenuItem, IconButton, Select } from '@mui/material';
 
-export const ScannerButtons: FC = ({}) => {
-  const { t } = useTranslation('scanner');
-  const [open, setOpen] = useState<boolean>(false);
+export interface ScannerButtonsProps {
+  isLoading?: boolean;
+}
+
+export const ScannerButtons: FC<ScannerButtonsProps> = ({
+  isLoading = false,
+}) => {
   const cameras = useRecoilValue(camerasState);
-  const setSelectedCamera = useSetRecoilState(selectedCameraState);
+  const [selectedCamera, setSelectedCamera] =
+    useRecoilState(selectedCameraState);
 
   return (
     <ButtonGroup
       size='small'
       variant='contained'
+      fullWidth
       sx={{
         backgroundColor: (theme) => theme.palette.common.white,
         opacity: '0.5',
       }}
+      disabled={isLoading}
     >
       <IconButton>
         <ImageIcon />
       </IconButton>
-      <IconButton onClick={() => setOpen(true)}>
-        <CameraIcon />
-      </IconButton>
-      <Popover
-        open={open}
-        onClose={() => setOpen(false)}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        transformOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
+      <Select
+        size='small'
+        fullWidth
+        disabled={isLoading}
+        value={selectedCamera}
+        onChange={(e) => setSelectedCamera(e.target.value)}
       >
-        <Paper>
-          <Typography variant='h2' sx={{ paddingTop: '1rem' }}>
-            {t('title.switchCamera')}
-          </Typography>
-          <MenuList>
-            {cameras.map(({ id, label }) => {
-              return (
-                <MenuItem
-                  key={id}
-                  onClick={() => {
-                    setSelectedCamera(id);
-                    setOpen(false);
-                  }}
-                >
-                  {label}
-                </MenuItem>
-              );
-            })}
-          </MenuList>
-        </Paper>
-      </Popover>
+        {cameras.map(({ id, label }) => {
+          return (
+            <MenuItem key={id} value={id}>
+              {label}
+            </MenuItem>
+          );
+        })}
+      </Select>
     </ButtonGroup>
   );
 };
