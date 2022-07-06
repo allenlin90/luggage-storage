@@ -1,15 +1,37 @@
 import type { FC, Dispatch, SetStateAction } from 'react';
 import type { Html5Qrcode } from 'html5-qrcode';
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useEffect, useMemo, useCallback, useRef } from 'react';
 import { useWindowSize } from 'react-use';
-import { useRecoilState, useSetRecoilState } from 'recoil';
-import { camerasState, selectedCameraState } from 'states';
 import { useTranslation } from 'next-i18next';
-import { Box } from '@mui/material';
+import { isMobile } from 'react-device-detect';
+import { camerasState, selectedCameraState } from 'states';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { Box, Backdrop, IconButton, styled } from '@mui/material';
 
 import dynamic from 'next/dynamic';
 const Loader = dynamic(() => import('components/common/Loader'));
 const ScannerButtons = dynamic(() => import('./ScannerButtons'));
+const ScannerTitle = dynamic(() => import('./ScannerTitle'));
+const CancelIcon = dynamic(() => import('@mui/icons-material/Cancel'));
+
+const ButtonWrapper = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'minWidth' && prop !== 'isMobile',
+})<{ minWidth?: number; isMobile?: boolean }>(
+  ({ theme, minWidth, isMobile = true }) => ({
+    position: 'absolute',
+    bottom: 45,
+    left: '50%',
+    transform: 'translateX(-50%)',
+    zIndex: theme.zIndex.drawer + 2,
+    width: isMobile
+      ? 300
+      : `calc(${minWidth ? `${minWidth}px` : '100%'} * (2 / 3))`,
+    maxWidth: '500px',
+    padding: '1.5rem 0',
+    display: 'flex',
+    justifyContent: 'center',
+  })
+);
 
 export type FacingMode = 'environment' | 'user';
 
@@ -18,28 +40,42 @@ export interface CameraStarter {
   deviceId?: { exact: string };
 }
 
-export interface ScannerProps {
+export interface ScannerFullProps {
   isScanning?: boolean;
-  cameraSize?: string;
-  setIsDenied?: Dispatch<SetStateAction<boolean>>;
   setIsScanning?: Dispatch<SetStateAction<boolean>>;
+  setIsDenied?: Dispatch<SetStateAction<boolean>>;
 }
 
-export const Scanner: FC<ScannerProps> = ({
+export const ScannerFull: FC<ScannerFullProps> = ({
   isScanning = false,
-  cameraSize = '350px',
-  setIsDenied = () =>
-    console.warn("no isDenied setter is given to 'ScannerFull'"),
   setIsScanning = () =>
     console.warn("no isScanning setter is given to 'ScannerFull'"),
+  setIsDenied = () =>
+    console.warn("no isDenied setter is given to 'ScannerFull'"),
 }) => {
   const { width, height } = useWindowSize();
   const { t } = useTranslation(['scanner', 'common']);
   const scannerRef = useRef<Html5Qrcode | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const hasStartedRef = useRef<boolean>(false);
   const setCameras = useSetRecoilState(camerasState);
-  const [selectedCamera, setSelectedCamera] =
-    useRecoilState(selectedCameraState);
+  const selectedCamera = useRecoilValue(selectedCameraState);
+
+  const minWidth = useMemo(() => Math.min(width, height), [width, height]);
+  const camConfig = useMemo(() => {
+    const minWidth = Math.min(height, width);
+    const ratio = 2 / 3;
+    const aspectRatio = isMobile
+      ? Math.ceil((height / width) * 100) / 100
+      : width / height;
+    const qrbox = isMobile
+      ? { width: minWidth * ratio, height: minWidth * ratio }
+      : 300;
+    return {
+      fps: 2,
+      qrbox,
+      aspectRatio,
+    };
+  }, [width, height]);
 
   const startScanner = useCallback(
     async (scanner: Html5Qrcode | null, cameraId?: string) => {
@@ -52,7 +88,6 @@ export const Scanner: FC<ScannerProps> = ({
       };
 
       try {
-        setIsLoading(true);
         if (scanner) {
           if (scanner.getState() === 2) {
             await scanner.stop();
@@ -66,69 +101,63 @@ export const Scanner: FC<ScannerProps> = ({
             camStarter = { deviceId: { exact: cameraId } };
           }
 
-          let boxSize = 350;
-          if (width < boxSize && height < boxSize) {
-            boxSize = width > height ? height : width;
-          }
-
-          await scanner.start(
-            camStarter,
-            { fps: 2, qrbox: boxSize, aspectRatio: 1 },
-            onSuccess,
-            onError
-          );
+          await scanner.start(camStarter, camConfig, onSuccess, onError);
         }
-        setIsLoading(false);
       } catch (error: any) {
         console.log('something went wrong when starting camera');
         console.log(error.message || error);
       }
     },
-    [width, height]
+    [camConfig]
   );
 
-  const initScanner = useCallback(async () => {
-    try {
-      const { Html5Qrcode } = await import('html5-qrcode');
-      const cams = await Html5Qrcode.getCameras();
-      if (cams.length) {
-        setCameras(cams);
-        const scanner = new Html5Qrcode('reader');
-        if (scannerRef.current) {
-          await scannerRef.current.stop();
-          scannerRef.current.clear();
-          scannerRef.current = null;
+  const initScanner = useCallback(
+    async (camId: string) => {
+      try {
+        const { Html5Qrcode } = await import('html5-qrcode');
+        const cams = await Html5Qrcode.getCameras();
+        if (cams.length) {
+          setCameras(cams);
+          const scanner = new Html5Qrcode('reader');
+          if (scannerRef.current) {
+            if (scannerRef.current.getState() === 2) {
+              await scannerRef.current.stop();
+            }
+            scannerRef.current.clear();
+            scannerRef.current = null;
+          }
+          scannerRef.current = scanner;
+          hasStartedRef.current = true;
+          startScanner(scanner, camId);
+          return;
         }
-        scannerRef.current = scanner;
-        startScanner(scanner, selectedCamera);
-        return;
-      }
 
-      throw new Error('no camera is available');
-    } catch (error: any) {
-      console.log('something went wrong when init qr reader');
-      console.warn(error);
-      if (error === 'NotAllowedError : Permission denied') {
-        setIsScanning(false);
-        setIsLoading(false);
-        setIsDenied(true);
+        throw new Error('no camera is available');
+      } catch (error: any) {
+        console.log('something went wrong when init qr reader');
+        console.warn(error);
+        if (error === 'NotAllowedError : Permission denied') {
+          setIsScanning(false);
+          setIsDenied(true);
+        }
       }
-    }
-  }, [
-    startScanner,
-    setIsScanning,
-    setIsLoading,
-    setIsDenied,
-    selectedCamera,
-    setCameras,
-  ]);
+    },
+    [startScanner, setIsScanning, setIsDenied, setCameras]
+  );
 
   // init scanner with camera
   useEffect(() => {
-    if (isScanning) {
-      initScanner();
+    if (isScanning && !hasStartedRef.current) {
+      initScanner(selectedCamera);
     }
-  }, [initScanner, isScanning]);
+  }, [initScanner, isScanning, selectedCamera]);
+
+  // switch between cameras
+  useEffect(() => {
+    if (isScanning && hasStartedRef.current) {
+      startScanner(scannerRef.current, selectedCamera);
+    }
+  }, [isScanning, startScanner, selectedCamera]);
 
   useEffect(() => {
     return () => {
@@ -141,62 +170,70 @@ export const Scanner: FC<ScannerProps> = ({
           })
           .catch((err) => {
             console.warn('something went wrong when stopping scanner');
+            console.log(err.message);
           });
       }
 
-      setIsDenied(false);
-      setIsLoading(false);
+      hasStartedRef.current = false;
+      setIsScanning(false);
     };
-  }, [setIsDenied, setIsLoading]);
-
-  // switch between cameras
-  useEffect(() => {
-    startScanner(scannerRef.current, selectedCamera);
-  }, [startScanner, selectedCamera]);
-
-  useEffect(() => {
-    console.log('hook');
-  });
+    // eslint-disable-next-line
+  }, []);
 
   return (
-    <>
-      <Box
-        width='100%'
-        height='100%'
+    <Backdrop
+      open={isScanning}
+      sx={{
+        backdropFilter: 'blur(4px)',
+        zIndex: (theme) => theme.zIndex.drawer + 1,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      <ScannerTitle title={t('title.scanQrCode')} />
+      <Loader
+        BoxProps={{
+          sx: {
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            textAlign: 'center',
+          },
+        }}
+        CircularProps={{
+          sx: { color: (theme) => theme.palette.white.main },
+        }}
+        TypographyProps={{
+          sx: { color: (theme) => theme.palette.white.main },
+        }}
+        text={`${t('hint.starting', { ns: 'common' })}...`}
+      />
+      <Box id='reader' sx={{ width: '100%', height: '100%' }} />
+      <IconButton
         sx={{
-          position: 'relative',
-          maxWidth: cameraSize,
-          maxHeight: cameraSize,
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: 'rgba(0, 0, 0, 0.7)',
+          position: 'absolute',
+          top: 20,
+          left: 20,
+        }}
+        onClick={() => {
+          if (scannerRef.current && scannerRef.current.getState() === 2) {
+            scannerRef.current.stop().then(() => {
+              scannerRef.current?.clear();
+            });
+          }
+          setIsScanning(false);
         }}
       >
-        {isLoading && (
-          <Loader
-            BoxProps={{
-              sx: {
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-              },
-            }}
-            CircularProps={{
-              sx: { color: (theme) => theme.palette.white.main },
-            }}
-            TypographyProps={{
-              sx: { color: (theme) => theme.palette.white.main },
-            }}
-            text={`${t('hint.starting', { ns: 'common' })}...`}
-          />
-        )}
-        <Box id='reader' width='100%' height='100%' />
-      </Box>
-      <ScannerButtons setIsScanning={setIsScanning} />
-    </>
+        <CancelIcon sx={{ color: (theme) => theme.palette.white.main }} />
+      </IconButton>
+      <ButtonWrapper minWidth={minWidth}>
+        <ScannerButtons setScanning={setIsScanning} />
+      </ButtonWrapper>
+    </Backdrop>
   );
 };
 
-export default Scanner;
+export default ScannerFull;
