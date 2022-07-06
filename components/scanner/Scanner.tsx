@@ -18,7 +18,7 @@ const IconButton = styled(MuiIconButton)(() => ({
 }));
 
 import dynamic from 'next/dynamic';
-const ScannerFull = dynamic(() => import('./Scanner/ScannerFull'), {
+const Scanner = dynamic(() => import('./Scanner/Scanner'), {
   ssr: false,
 });
 const QrCodeScannerIcon = dynamic(
@@ -50,7 +50,7 @@ export const ScannerPanel: FC = () => {
 
   return (
     <>
-      <ScannerFull
+      <Scanner
         isScanning={isScanning}
         setIsScanning={setIsScanning}
         setIsDenied={setIsDenied}
