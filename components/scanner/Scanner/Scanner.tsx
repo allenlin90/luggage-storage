@@ -46,7 +46,7 @@ export interface ScannerFullProps {
   setIsDenied?: Dispatch<SetStateAction<boolean>>;
 }
 
-export const ScannerFull: FC<ScannerFullProps> = ({
+export const Scanner: FC<ScannerFullProps> = ({
   isScanning = false,
   setIsScanning = () =>
     console.warn("no isScanning setter is given to 'ScannerFull'"),
@@ -230,10 +230,10 @@ export const ScannerFull: FC<ScannerFullProps> = ({
         <CancelIcon sx={{ color: (theme) => theme.palette.white.main }} />
       </IconButton>
       <ButtonWrapper minWidth={minWidth}>
-        <ScannerButtons setScanning={setIsScanning} />
+        <ScannerButtons />
       </ButtonWrapper>
     </Backdrop>
   );
 };
 
-export default ScannerFull;
+export default Scanner;

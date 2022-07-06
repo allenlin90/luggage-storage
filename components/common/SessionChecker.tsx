@@ -1,5 +1,5 @@
 import type { FC, Dispatch, SetStateAction } from 'react';
-import { SessionToken } from 'types';
+import type { SessionToken } from 'types';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSession, signIn, signOut } from 'next-auth/react';

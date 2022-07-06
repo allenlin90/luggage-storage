@@ -1,4 +1,4 @@
-import type { Dispatch, FC, SetStateAction } from 'react';
+import type { FC } from 'react';
 import { camerasState, selectedCameraState } from 'states';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import ImageIcon from '@mui/icons-material/Image';
@@ -6,13 +6,10 @@ import { ButtonGroup, MenuItem, IconButton, Select } from '@mui/material';
 
 export interface ScannerButtonsProps {
   isLoading?: boolean;
-  setScanning?: Dispatch<SetStateAction<boolean>>;
 }
 
 export const ScannerButtons: FC<ScannerButtonsProps> = ({
   isLoading = false,
-  setScanning = () =>
-    console.warn("no isScanning setter is given to 'ScannerButtons'"),
 }) => {
   const cameras = useRecoilValue(camerasState);
   const [selectedCamera, setSelectedCamera] =
