@@ -4,8 +4,10 @@ export const setting = {
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/node_modules/'],
   moduleNameMapper: {
-    '\\.(scss|sass|css)$': 'identity-obj-proxy',
+    '\\.(scss|sass|css|less)$': 'identity-obj-proxy',
   },
+  moduleDirectories: ['node_modules', '<rootDir>'],
+  modulePathIgnorePatterns: ['cypress'],
 };
 
 export default setting;

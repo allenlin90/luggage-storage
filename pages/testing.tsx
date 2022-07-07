@@ -17,7 +17,7 @@ export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
 export const TestingPage: NextPageWithLayout = () => {
   return (
     <>
-      <Seo title='Testing' />
+      <Seo title="Testing" />
     </>
   );
 };
