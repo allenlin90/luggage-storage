@@ -3,11 +3,11 @@ import getConfig from 'next/config';
 import { ReactQueryDevtools } from 'react-query/devtools';
 
 const {
-  publicRuntimeConfig: { production },
+  publicRuntimeConfig: { local },
 } = getConfig();
 
 export const DynamicQueryDevtools: FC = () => {
-  return production ? null : <ReactQueryDevtools />;
+  return local ? null : <ReactQueryDevtools />;
 };
 
 export default DynamicQueryDevtools;
