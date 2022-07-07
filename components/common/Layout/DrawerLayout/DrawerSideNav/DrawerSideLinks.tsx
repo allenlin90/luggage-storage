@@ -50,7 +50,9 @@ export const DrawerSideLinks: FC = () => {
             <ListItem button selected={id === onPath}>
               <ListItemIcon>{linkIcons[id]}</ListItemIcon>
               <ListItemText>
-                <Typography>{t(`links.${id}`)}</Typography>
+                <Typography sx={{ textAlign: 'left' }}>
+                  {t(`links.${id}`)}
+                </Typography>
               </ListItemText>
             </ListItem>
           </Link>

@@ -1,7 +1,12 @@
 import type { FC } from 'react';
 import Link from 'next/link';
 import SettingsIcon from '@mui/icons-material/SettingsOutlined';
-import { ListItem, ListItemIcon, ListItemText } from '@mui/material';
+import {
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Typography,
+} from '@mui/material';
 
 export interface DrawerSettingsProps {
   settingsText?: string;
@@ -18,7 +23,9 @@ export const DrawerSettings: FC<DrawerSettingsProps> = ({
         <ListItemIcon>
           <SettingsIcon />
         </ListItemIcon>
-        <ListItemText>{settingsText}</ListItemText>
+        <ListItemText>
+          <Typography sx={{ textAlign: 'left' }}>{settingsText}</Typography>
+        </ListItemText>
       </ListItem>
     </Link>
   );
