@@ -8,9 +8,11 @@
     "btn": { "signout": "Signout" }
   },
   "links": {
+    "dashboard": "Dashboard",
     "warehouse": "Warehouse",
     "scanner": "Scanner",
-    "settings": "Settings"
+    "settings": "Settings",
+    "testing": "Testing"
   },
   "branch": {
     "dmk": "Don Mueang",

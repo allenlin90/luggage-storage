@@ -3,6 +3,11 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Seo from 'components/common/Seo';
+import getConfig from 'next/config';
+
+const {
+  publicRuntimeConfig: { local },
+} = getConfig();
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
   return {
@@ -17,7 +22,11 @@ const HomePage: NextPage = () => {
   const { push } = useRouter();
 
   useEffect(() => {
-    push('/warehouse');
+    if (local) {
+      push('/testing');
+    } else {
+      push('/warehouse');
+    }
   }, [push]);
 
   return <Seo title='Home' />;

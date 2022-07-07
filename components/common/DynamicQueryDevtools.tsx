@@ -7,7 +7,7 @@ const {
 } = getConfig();
 
 export const DynamicQueryDevtools: FC = () => {
-  return local ? null : <ReactQueryDevtools />;
+  return local ? <ReactQueryDevtools /> : null;
 };
 
 export default DynamicQueryDevtools;

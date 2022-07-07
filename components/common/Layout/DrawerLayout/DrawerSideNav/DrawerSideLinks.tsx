@@ -1,10 +1,8 @@
 import type { FC, ReactNode } from 'react';
-import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
-import WarehouseIcon from '@mui/icons-material/WarehouseOutlined';
-import QrCodeScannerIcon from '@mui/icons-material/QrCodeScannerOutlined';
 import {
   Divider,
   List,
@@ -16,7 +14,19 @@ import {
 import sideLinks from 'constants/sideLinks';
 import DrawerSettings from './DrawerSettings';
 
+import dynamic from 'next/dynamic';
+const WarehouseIcon = dynamic(
+  () => import('@mui/icons-material/WarehouseOutlined')
+);
+const QrCodeScannerIcon = dynamic(
+  () => import('@mui/icons-material/QrCodeScannerOutlined')
+);
+const AnalyticsIcon = dynamic(
+  () => import('@mui/icons-material/AnalyticsOutlined')
+);
+
 const linkIcons: { [key: string]: ReactNode } = {
+  dashboard: <AnalyticsIcon />,
   warehouse: <WarehouseIcon />,
   scanner: <QrCodeScannerIcon />,
 };
