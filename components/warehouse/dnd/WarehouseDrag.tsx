@@ -1,7 +1,6 @@
 import type { FC, ReactNode, KeyboardEvent, MouseEvent } from 'react';
 import type { DraggableStateSnapshot } from 'react-beautiful-dnd';
 import { Draggable } from 'react-beautiful-dnd';
-import EditIcon from '@mui/icons-material/Edit';
 import {
   ListItem,
   ListItemText,
@@ -9,6 +8,9 @@ import {
   IconButton,
 } from '@mui/material';
 import { wasToggleInSelectionGroupKeyUsed, wasMultiSelectKeyUsed } from 'utils';
+
+import dynamic from 'next/dynamic';
+const EditIcon = dynamic(() => import('@mui/icons-material/Edit'));
 
 export interface WarehouseDragProps {
   item: { id: string; [key: string]: any };
@@ -91,7 +93,7 @@ export const WarehouseDrag: FC<WarehouseDragProps> = ({
         >
           <ListItemText>{content ?? item.id}</ListItemText>
           <ListItemIcon sx={{ justifyContent: 'end' }}>
-            <IconButton>
+            <IconButton aria-label={`edit-item-${item.id}`}>
               <EditIcon />
             </IconButton>
           </ListItemIcon>

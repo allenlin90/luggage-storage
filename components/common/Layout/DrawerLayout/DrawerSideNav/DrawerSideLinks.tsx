@@ -13,7 +13,7 @@ import {
   ListItemIcon,
   Typography,
 } from '@mui/material';
-import sideLinks from 'utils/constants/sideLinks';
+import sideLinks from 'constants/sideLinks';
 import DrawerSettings from './DrawerSettings';
 
 const linkIcons: { [key: string]: ReactNode } = {

@@ -8,6 +8,14 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 const nextConfig = {
   // reactStrictMode: true,
   i18n,
+  images: {
+    domains: ['flagcdn.com'],
+  },
+  publicRuntimeConfig: {
+    production: process.env.NODE_ENV === 'production',
+    staging: process.env.NODE_ENV === 'staging',
+    local: process.env.NODE_ENV === 'local',
+  },
   // pwa: {
   //   disable: process.env.NODE_ENV !== 'production',
   // },

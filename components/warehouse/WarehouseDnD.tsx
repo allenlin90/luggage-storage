@@ -4,10 +4,12 @@ import type {
   DropResult,
   DragDropContextProps,
 } from 'react-beautiful-dnd';
-import { useState, useTransition } from 'react';
+
+import { useState } from 'react';
 import { useWarehouse } from 'context';
 import { Box } from '@mui/material';
-import { WarehouseDrop, WarehouseDrag } from 'components';
+import WarehouseDrop from 'components/warehouse/dnd/WarehouseDrop';
+import WarehouseDrag from 'components/warehouse/dnd/WarehouseDrag';
 
 import dynamic from 'next/dynamic';
 const DragDropContext = dynamic<DragDropContextProps>(() =>
@@ -16,7 +18,6 @@ const DragDropContext = dynamic<DragDropContextProps>(() =>
 
 export const WarehouseDnD: FC = () => {
   const [warehouse] = useWarehouse();
-  const [isProcessing, startProcess] = useTransition();
   const [col1, setCol1] = useState([
     { id: '1', col: '1' },
     { id: '2', col: '1' },
@@ -29,45 +30,43 @@ export const WarehouseDnD: FC = () => {
   const onDragStart = (start: DragStart) => {};
 
   const onDragEnd = (result: DropResult) => {
-    startProcess(() => {
-      const {
-        destination,
-        // draggableId,
-        source,
-      } = result;
-      let movedItem;
-      let array;
-      if (source?.droppableId === '1') {
+    const {
+      destination,
+      // draggableId,
+      source,
+    } = result;
+    let movedItem;
+    let array;
+    if (source?.droppableId === '1') {
+      array = [...col1];
+      movedItem = array.splice(source?.index, 1);
+      setCol1(array);
+    } else if (source?.droppableId === '2') {
+      array = [...col2];
+      movedItem = array.splice(source?.index, 1);
+      setCol2(array);
+    }
+
+    if (destination?.droppableId === '1') {
+      if (destination?.droppableId !== source?.droppableId) {
         array = [...col1];
-        movedItem = array.splice(source?.index, 1);
+      }
+      if (movedItem && array) {
+        array.splice(destination?.index, 0, movedItem[0]);
         setCol1(array);
-      } else if (source?.droppableId === '2') {
+      }
+    } else if (destination?.droppableId === '2') {
+      if (destination?.droppableId !== source?.droppableId) {
         array = [...col2];
-        movedItem = array.splice(source?.index, 1);
+      }
+      if (movedItem && array) {
+        array.splice(destination?.index, 0, movedItem[0]);
         setCol2(array);
       }
+    }
 
-      if (destination?.droppableId === '1') {
-        if (destination?.droppableId !== source?.droppableId) {
-          array = [...col1];
-        }
-        if (movedItem && array) {
-          array.splice(destination?.index, 0, movedItem[0]);
-          setCol1(array);
-        }
-      } else if (destination?.droppableId === '2') {
-        if (destination?.droppableId !== source?.droppableId) {
-          array = [...col2];
-        }
-        if (movedItem && array) {
-          array.splice(destination?.index, 0, movedItem[0]);
-          setCol2(array);
-        }
-      }
-
-      array = undefined;
-      movedItem = undefined;
-    });
+    array = undefined;
+    movedItem = undefined;
   };
 
   return (
@@ -82,7 +81,7 @@ export const WarehouseDnD: FC = () => {
           boxSizing: 'border-box',
         }}
       >
-        <WarehouseDrop id='1' isProcessing={isProcessing}>
+        <WarehouseDrop id='1'>
           {col1.map((item, index) => (
             <WarehouseDrag
               item={item}
@@ -94,7 +93,7 @@ export const WarehouseDnD: FC = () => {
             />
           ))}
         </WarehouseDrop>
-        <WarehouseDrop id='2' isProcessing={isProcessing}>
+        <WarehouseDrop id='2'>
           {col2.map((item, index) => (
             <WarehouseDrag
               item={item}

@@ -10,13 +10,15 @@ import {
   Typography,
 } from '@mui/material';
 
+const IconButton = styled(MuiIconButton)(() => ({
+  width: '100%',
+  height: '100%',
+  maxWidth: '350px',
+  maxHeight: '350px',
+}));
+
 import dynamic from 'next/dynamic';
-// const ScannerFull = dynamic(() => import('./Scanner/ScannerFull'), {
-//   ssr: false,
-// });
-const Scanner = dynamic(() => import('./Scanner/Scanner'), {
-  ssr: false,
-});
+const Scanner = dynamic(() => import('./Scanner/Scanner'), { ssr: false });
 const QrCodeScannerIcon = dynamic(
   () => import('@mui/icons-material/QrCodeScanner'),
   { ssr: false }
@@ -29,15 +31,6 @@ const Container = styled(Box)(() => ({
   flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'center',
-}));
-
-const cameraSize = '350px';
-
-const IconButton = styled(MuiIconButton)(() => ({
-  width: '100%',
-  height: '100%',
-  maxWidth: cameraSize,
-  maxHeight: cameraSize,
 }));
 
 export const ScannerPanel: FC = () => {
@@ -55,6 +48,11 @@ export const ScannerPanel: FC = () => {
 
   return (
     <>
+      <Scanner
+        isScanning={isScanning}
+        setIsScanning={setIsScanning}
+        setIsDenied={setIsDenied}
+      />
       <Container>
         {isDenied ? (
           <Box>
@@ -63,35 +61,22 @@ export const ScannerPanel: FC = () => {
           </Box>
         ) : (
           <>
-            {!isScanning ? (
-              <IconButton
-                size='large'
-                disabled={isScanning}
-                aria-label='qr-reader-button'
-                onClick={() => {
-                  setIsScanning((oldVal) => !oldVal);
+            <IconButton
+              size='large'
+              disabled={isScanning}
+              aria-label='qr-reader-button'
+              onClick={() => {
+                setIsScanning((oldVal) => !oldVal);
+              }}
+            >
+              <QrCodeScannerIcon
+                sx={{
+                  width: '100%',
+                  height: '100%',
                 }}
-              >
-                <QrCodeScannerIcon
-                  sx={{
-                    width: '100%',
-                    height: '100%',
-                  }}
-                />
-              </IconButton>
-            ) : (
-              <Scanner
-                isScanning={isScanning}
-                setIsScanning={setIsScanning}
-                setIsDenied={setIsDenied}
-                cameraSize={cameraSize}
               />
-            )}
-            {!isScanning && (
-              <Typography sx={{ lineHeight: '40px' }}>
-                {t('title.tapToScan')}
-              </Typography>
-            )}
+            </IconButton>
+            <Typography>{t('title.tapToScan')}</Typography>
           </>
         )}
       </Container>

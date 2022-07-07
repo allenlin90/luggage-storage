@@ -1,20 +1,21 @@
 import type { FC } from 'react';
-import { Box, styled } from '@mui/material';
-
-const Container = styled(Box)(() => ({
-  width: '100%',
-  height: '100%',
-  position: 'relative',
-}));
+import { Box } from '@mui/material';
 
 import dynamic from 'next/dynamic';
 const WarehouseDnD = dynamic(() => import('./WarehouseDnD'), { ssr: false });
 
 export const Warehouse: FC = () => {
   return (
-    <Container component='section'>
+    <Box
+      component='section'
+      width='100%'
+      height='100%'
+      sx={{
+        position: 'relative',
+      }}
+    >
       <WarehouseDnD />
-    </Container>
+    </Box>
   );
 };
 

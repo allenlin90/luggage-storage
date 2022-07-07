@@ -15,7 +15,7 @@ export const WarehouseDrop: FC<WarehouseDropProps> = ({
 }) => {
   return (
     <Droppable droppableId={id} isDropDisabled={isProcessing}>
-      {({ droppableProps, innerRef }, { isDraggingOver }) => (
+      {({ droppableProps, innerRef, placeholder }, { isDraggingOver }) => (
         <List
           sx={{
             border: '1px solid #333',
@@ -27,6 +27,7 @@ export const WarehouseDrop: FC<WarehouseDropProps> = ({
           {...droppableProps}
         >
           <>{children}</>
+          {placeholder}
         </List>
       )}
     </Droppable>
