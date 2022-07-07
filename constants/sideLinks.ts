@@ -10,6 +10,11 @@ export const sideLinks = [
     title: 'Warehouse',
   },
   {
+    id: 'map',
+    href: '/map',
+    title: 'Map',
+  },
+  {
     id: 'scanner',
     href: '/scanner',
     title: 'Scanner',

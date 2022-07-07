@@ -24,10 +24,12 @@ const QrCodeScannerIcon = dynamic(
 const AnalyticsIcon = dynamic(
   () => import('@mui/icons-material/AnalyticsOutlined')
 );
+const MapIcon = dynamic(() => import('@mui/icons-material/MapOutlined'));
 
 const linkIcons: { [key: string]: ReactNode } = {
   dashboard: <AnalyticsIcon />,
   warehouse: <WarehouseIcon />,
+  map: <MapIcon />,
   scanner: <QrCodeScannerIcon />,
 };
 
