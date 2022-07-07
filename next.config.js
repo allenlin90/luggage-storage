@@ -11,6 +11,10 @@ const nextConfig = {
   images: {
     domains: ['flagcdn.com'],
   },
+  publicRuntimeConfig: {
+    production: process.env.NODE_ENV === 'production',
+    staging: process.env.NODE_ENV === 'staging',
+  },
   // pwa: {
   //   disable: process.env.NODE_ENV !== 'production',
   // },
