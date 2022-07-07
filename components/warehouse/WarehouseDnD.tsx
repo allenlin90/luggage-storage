@@ -6,7 +6,7 @@ import type {
 } from 'react-beautiful-dnd';
 
 import { useState } from 'react';
-import { useWarehouse } from 'context';
+// import { useWarehouse } from 'context';
 import { Box } from '@mui/material';
 import WarehouseDrop from 'components/warehouse/dnd/WarehouseDrop';
 import WarehouseDrag from 'components/warehouse/dnd/WarehouseDrag';
@@ -17,17 +17,25 @@ const DragDropContext = dynamic<DragDropContextProps>(() =>
 );
 
 export const WarehouseDnD: FC = () => {
-  const [warehouse] = useWarehouse();
+  // const [warehouse] = useWarehouse();
   const [col1, setCol1] = useState([
     { id: '1', col: '1' },
     { id: '2', col: '1' },
   ]);
   const [col2, setCol2] = useState([{ id: '3', col: '2' }]);
 
-  const toggleSelection = (id: string) => {};
-  const toggleSelectionInGroup = (id: string) => {};
-  const multiSelectTo = (id: string) => {};
-  const onDragStart = (start: DragStart) => {};
+  const toggleSelection = (id: string) => {
+    console.log(id);
+  };
+  const toggleSelectionInGroup = (id: string) => {
+    console.log(id);
+  };
+  const multiSelectTo = (id: string) => {
+    console.log(id);
+  };
+  const onDragStart = (start: DragStart) => {
+    console.log(start);
+  };
 
   const onDragEnd = (result: DropResult) => {
     const {
@@ -81,7 +89,7 @@ export const WarehouseDnD: FC = () => {
           boxSizing: 'border-box',
         }}
       >
-        <WarehouseDrop id='1'>
+        <WarehouseDrop id="1">
           {col1.map((item, index) => (
             <WarehouseDrag
               item={item}
@@ -93,7 +101,7 @@ export const WarehouseDnD: FC = () => {
             />
           ))}
         </WarehouseDrop>
-        <WarehouseDrop id='2'>
+        <WarehouseDrop id="2">
           {col2.map((item, index) => (
             <WarehouseDrag
               item={item}

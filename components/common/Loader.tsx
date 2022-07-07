@@ -10,20 +10,7 @@ import {
   // Typography as MuiTypography,
   Typography,
   TypographyProps,
-  styled,
 } from '@mui/material';
-
-// const Box = styled(MuiBox, {
-//   shouldForwardProp: (prop) => prop !== 'BoxProps',
-// })<{ BoxProps?: SxProps }>(({ BoxProps }) => ({ ...BoxProps }));
-
-// const CircularProgress = styled(MuiCircularProgress)<{
-//   CircularProps?: SxProps;
-// }>(({ CircularProps }) => ({ ...CircularProps }));
-
-// const Typography = styled(MuiTypography)<{
-//   TypographyProps?: SxProps;
-// }>(({ TypographyProps }) => ({ ...TypographyProps }));
 
 export interface LoaderProps {
   CircularProps?: CircularProgressProps;
@@ -41,7 +28,7 @@ export const Loader: FC<LoaderProps> = ({
   return (
     <Box sx={{ textAlign: 'center' }} {...BoxProps}>
       <CircularProgress {...CircularProps} />
-      <Typography color='primary' {...TypographyProps}>
+      <Typography color="primary" {...TypographyProps}>
         {text}
       </Typography>
     </Box>

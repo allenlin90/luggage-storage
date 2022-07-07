@@ -24,7 +24,10 @@ const querystring = (obj: QueryString): string => {
 };
 
 const refreshToken = async (token: LINEToken): Promise<LINEToken> => {
-  const { refreshToken: refresh_token, accessToken: access_token } = token;
+  const {
+    refreshToken: refresh_token,
+    // accessToken: access_token
+  } = token;
   const params = {
     client_id: clientId,
     client_secret: clientSecret,
@@ -108,7 +111,11 @@ export default NextAuth({
       return updatedToken;
     },
     session: async (ctx) => {
-      const { session, token, user } = ctx;
+      const {
+        session,
+        token,
+        // user
+      } = ctx;
 
       if (token) {
         const { expiresAt, accessToken } = token;

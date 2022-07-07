@@ -84,7 +84,7 @@ export const Scanner: FC<ScannerFullProps> = ({
       };
 
       const onError = (errorText: string) => {
-        // console.log(errorText);
+        return errorText;
       };
 
       try {
@@ -211,7 +211,7 @@ export const Scanner: FC<ScannerFullProps> = ({
         }}
         text={`${t('hint.starting', { ns: 'common' })}...`}
       />
-      <Box id='reader' sx={{ width: '100%', height: '100%' }} />
+      <Box id="reader" sx={{ width: '100%', height: '100%' }} />
       <IconButton
         sx={{
           position: 'absolute',
