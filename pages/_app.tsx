@@ -19,6 +19,7 @@ const DefaultSeo = dynamic<DefaultSeoProps>(() =>
 );
 const RouteLoader = dynamic(() => import('components/common/RouteLoader'));
 const RecoilRoot = dynamic(() => import('components/common/RecoilRoot'));
+const Dialog = dynamic(() => import('components/common/Dialog'));
 const SessionProvider = dynamic<SessionProviderProps>(() =>
   import('next-auth/react').then((mod) => mod.SessionProvider)
 );
@@ -61,6 +62,7 @@ function MyApp({
               <DefaultSeo {...DefaultSeoConfig} />
               <CssBaseline />
               <SessionChecker setter={setRefetchInterval} />
+              <Dialog />
               <RouteLoader>
                 {getLayout(<Component {...pageProps} />)}
               </RouteLoader>

@@ -26,5 +26,9 @@
     "starting": "Starting",
     "offline": "App is offline",
     "online": "App is connected to the Internet"
+  },
+  "btn": {
+    "cancel": "Cancel",
+    "close": "Close"
   }
 }
