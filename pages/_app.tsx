@@ -28,6 +28,10 @@ const SessionChecker = dynamic(
 const ReactQueryDevtools = dynamic(
   () => import('components/common/DynamicQueryDevtools')
 );
+const OnlineIndicator = dynamic(
+  () => import('components/common/OnlineIndicator'),
+  { ssr: false }
+);
 
 export type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactElement;
@@ -60,6 +64,7 @@ function MyApp({
               <RouteLoader>
                 {getLayout(<Component {...pageProps} />)}
               </RouteLoader>
+              <OnlineIndicator />
               <ReactQueryDevtools />
             </RecoilRoot>
           </ThemeProvider>

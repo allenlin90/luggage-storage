@@ -23,6 +23,8 @@
   },
   "hint": {
     "loading": "Loading",
-    "starting": "Starting"
+    "starting": "Starting",
+    "offline": "App is offline",
+    "online": "App is connected to the Internet"
   }
 }

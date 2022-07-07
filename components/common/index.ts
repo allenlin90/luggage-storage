@@ -2,6 +2,7 @@ export * from './BranchSelect';
 export * from './FlexSpacer';
 export * from './Layout';
 export * from './Loader';
+export * from './OnlineIndicator';
 export * from './PageLoader';
 export * from './RouteLoader';
 export * from './Seo';
