@@ -18,6 +18,7 @@ APP_ENV=local
 ## Global features
 1. Route loader triggers when switching between paths
 2. Connection indicator
+3. Dialog controlled by 4 recoil states `open`, `title`, `body`, and `action`
 
 # Authentication
 1. This app use `next-auth` with LINE OAuth.
