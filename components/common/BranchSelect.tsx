@@ -2,7 +2,7 @@ import type { FC } from 'react';
 import { useTranslation } from 'next-i18next';
 import { selectedBranchState } from 'states';
 import { useRecoilState } from 'recoil';
-import { branches } from 'utils';
+import branches from 'constants/branches';
 import { Select, MenuItem, Typography } from '@mui/material';
 
 export interface BranchSelectProps {

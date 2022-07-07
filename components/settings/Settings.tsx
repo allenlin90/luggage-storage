@@ -3,7 +3,7 @@ import type { SelectChangeEvent } from '@mui/material';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
-import languages from 'utils/constants/languages';
+import languages from 'constants/languages';
 import { Box, Divider, Typography } from '@mui/material';
 
 import dynamic from 'next/dynamic';
