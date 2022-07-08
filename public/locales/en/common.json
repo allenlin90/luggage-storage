@@ -12,7 +12,7 @@
     "warehouse": "Warehouse",
     "scanner": "Scanner",
     "settings": "Settings",
-    "map": "map",
+    "map": "Map",
     "testing": "Testing"
   },
   "branch": {
@@ -31,5 +31,12 @@
   "btn": {
     "cancel": "Cancel",
     "close": "Close"
+  },
+  "pincode": {
+    "title": {
+      "insertPincode": "Enter PIN",
+      "confirmPincode": "Confirm PIN",
+      "incorrectPin": "Incorrect PIN"
+    }
   }
 }
