@@ -1,6 +1,6 @@
 import { FC, useEffect, useRef } from 'react';
 import { useState } from 'react';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue, useRecoilState } from 'recoil';
 import { pincodeAuthState, pincodeState } from 'states';
 import { Box } from '@mui/material';
 import PincodeDots from './PincodeDots';
@@ -19,11 +19,11 @@ export const PincodePanel: FC = () => {
   const pincodeRef = useRef(pincode);
   const [isError, setIsError] = useState<boolean>(false);
   const pincodeAuth = useRecoilValue(pincodeAuthState);
-  const setOpen = useSetRecoilState(pincodeState);
+  const [open, setOpen] = useRecoilState(pincodeState);
 
   useEffect(() => {
     pincodeRef.current = pincode;
-    if (isError) {
+    if (isError && pincode.length) {
       setIsError(false);
     }
 
@@ -32,9 +32,16 @@ export const PincodePanel: FC = () => {
       const code = pincode.join('');
       if (code !== '0000') {
         setIsError(true);
+        setTimeout(() => {
+          setPincode([]);
+        }, 1000);
       } else {
         pincodeAuth();
         setOpen(false);
+        setPincode([]);
+        pincodeRef.current = [];
+        setIsError(false);
+        setDigits(4);
       }
     }
   }, [pincode, isError, pincodeAuth, setOpen]);
@@ -57,6 +64,7 @@ export const PincodePanel: FC = () => {
         setPincode={setPincode}
         pincodeRef={pincodeRef}
         digits={digits}
+        open={open}
       />
     </Box>
   );
