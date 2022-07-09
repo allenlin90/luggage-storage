@@ -114,13 +114,16 @@ const Component: FC<PincodeButtonsProps> = ({
           <Typography>{num}</Typography>
         </Button>
       ))}
-      <IconButton onClick={() => removePin()}>
+      <IconButton
+        onClick={() => removePin()}
+        sx={{ width: size, height: size }}
+      >
         <BackspaceIcon sx={{ color: (theme) => theme.palette.white.main }} />
       </IconButton>
       <Button onClick={() => setPin(0)} minEdge={size}>
         <Typography>0</Typography>
       </Button>
-      <IconButton>
+      <IconButton sx={{ width: size, height: size }}>
         <PersonIcon sx={{ color: (theme) => theme.palette.white.main }} />
       </IconButton>
     </Box>
