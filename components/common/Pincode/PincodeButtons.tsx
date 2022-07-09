@@ -5,7 +5,7 @@ import {
   Box,
   Button as MuiButton,
   Typography as MuiTypography,
-  IconButton,
+  IconButton as MuiIconButton,
   styled,
 } from '@mui/material';
 
@@ -19,8 +19,8 @@ const Button = styled(MuiButton, {
 })<{ minEdge?: number | string }>(({ minEdge }) => ({
   fontSize: '1.2rem',
   backgroundColor: 'rgba(255, 255, 255, 0.3)',
-  width: minEdge,
-  height: minEdge,
+  width: minEdge + 'px',
+  height: minEdge + 'px',
   minWidth: '3rem',
   minHeight: '3rem',
   maxWidth: '5rem',
@@ -29,6 +29,17 @@ const Button = styled(MuiButton, {
   display: 'inline-flex',
   justifyContent: 'center',
   alignItems: 'center',
+}));
+
+const IconButton = styled(MuiIconButton, {
+  shouldForwardProp: (prop) => prop !== 'minEdge',
+})<{ minEdge?: number | string }>(({ minEdge }) => ({
+  width: minEdge + 'px',
+  height: minEdge + 'px',
+  minWidth: '3rem',
+  minHeight: '3rem',
+  maxWidth: '5rem',
+  maxHeight: '5rem',
 }));
 
 const Typography = styled(MuiTypography)(({ theme }) => ({
@@ -114,16 +125,13 @@ const Component: FC<PincodeButtonsProps> = ({
           <Typography>{num}</Typography>
         </Button>
       ))}
-      <IconButton
-        onClick={() => removePin()}
-        sx={{ width: size, height: size }}
-      >
+      <IconButton onClick={() => removePin()}>
         <BackspaceIcon sx={{ color: (theme) => theme.palette.white.main }} />
       </IconButton>
       <Button onClick={() => setPin(0)} minEdge={size}>
         <Typography>0</Typography>
       </Button>
-      <IconButton sx={{ width: size, height: size }}>
+      <IconButton>
         <PersonIcon sx={{ color: (theme) => theme.palette.white.main }} />
       </IconButton>
     </Box>
