@@ -39,7 +39,6 @@ const Typography = styled(MuiTypography)(({ theme }) => ({
 export interface PincodeButtonsProps {
   setPincode: Dispatch<SetStateAction<string[]>>;
   pincodeRef?: MutableRefObject<string[]>;
-  open?: boolean;
   numbers?: number[];
   digits?: number;
 }
@@ -47,7 +46,6 @@ export interface PincodeButtonsProps {
 const Component: FC<PincodeButtonsProps> = ({
   setPincode,
   pincodeRef = { current: [] },
-  open = false,
   numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9],
   digits = 4,
 }) => {
@@ -77,16 +75,14 @@ const Component: FC<PincodeButtonsProps> = ({
     });
 
   const keyDownHandler = (event: KeyboardEvent) => {
-    if (open) {
-      if (pincodeRef.current.length < digits) {
-        if (!Number.isNaN(parseInt(event.key))) {
-          setPin(parseInt(event.key));
-        }
+    if (pincodeRef.current.length < digits) {
+      if (!Number.isNaN(parseInt(event.key))) {
+        setPin(parseInt(event.key));
       }
+    }
 
-      if (event.key === 'Backspace') {
-        removePin();
-      }
+    if (event.key === 'Backspace') {
+      removePin();
     }
   };
 

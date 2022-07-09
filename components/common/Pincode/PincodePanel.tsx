@@ -28,7 +28,6 @@ export const PincodePanel: FC = () => {
     }
 
     if (pincode.length === 4) {
-      console.log('verification logic');
       const code = pincode.join('');
       if (code !== '0000') {
         setIsError(true);
@@ -47,6 +46,10 @@ export const PincodePanel: FC = () => {
   }, [pincode, isError, pincodeAuth, setOpen]);
 
   useEffect(() => {
+    setPincode([]);
+  }, [open]);
+
+  useEffect(() => {
     return () => {
       setPincode([]);
       pincodeRef.current = [];
@@ -60,12 +63,13 @@ export const PincodePanel: FC = () => {
     <Box width="100%" height="100%" sx={{ maxWidth, padding: '2rem' }}>
       <LockIcon sx={{ color: (theme) => theme.palette.white.main }} />
       <PincodeDots pincode={pincode} isError={isError} digits={digits} />
-      <PincodeButtons
-        setPincode={setPincode}
-        pincodeRef={pincodeRef}
-        digits={digits}
-        open={open}
-      />
+      {open && (
+        <PincodeButtons
+          setPincode={setPincode}
+          pincodeRef={pincodeRef}
+          digits={digits}
+        />
+      )}
     </Box>
   );
 };
