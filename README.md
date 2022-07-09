@@ -71,7 +71,7 @@ APP_ENV=local
 2. [x] Route loader triggers when switching between paths.
 3. [x] Dialog controlled by 4 recoil states `open`, `title`, `body`, and `action`.
 4. [x] Pin panel for 4 - 6 digits
-5. [ ] In app notification
+5. [x] In app notification
 6. Global order search
    1. [ ] Auto complete (orders)
 
@@ -91,3 +91,4 @@ APP_ENV=local
 2. Github actions
    1. [ ] Build breaker
    2. [ ] Dependbot
+   3. [ ] Test coverage report
