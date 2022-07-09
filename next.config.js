@@ -9,7 +9,7 @@ const nextConfig = {
   // reactStrictMode: true,
   i18n,
   images: {
-    domains: ['flagcdn.com'],
+    domains: ['flagcdn.com', 'images.unsplash.com'],
   },
   publicRuntimeConfig: {
     production: process.env.APP_ENV === 'production',

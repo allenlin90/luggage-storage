@@ -1,7 +1,6 @@
 import type { Camera } from 'types';
 import { atom } from 'recoil';
 import { recoilPersist } from 'recoil-persist';
-
 const { persistAtom } = recoilPersist();
 
 export const selectedCameraState = atom<string>({

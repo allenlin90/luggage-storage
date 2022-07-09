@@ -7,6 +7,12 @@
     },
     "btn": { "signout": "Signout" }
   },
+  "topNav": {
+    "notification": {
+      "notifications": "Notifications",
+      "read": "Read"
+    }
+  },
   "links": {
     "dashboard": "Dashboard",
     "warehouse": "Warehouse",

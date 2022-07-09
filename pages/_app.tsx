@@ -20,14 +20,17 @@ const DefaultSeo = dynamic<DefaultSeoProps>(() =>
 const RouteLoader = dynamic(() => import('components/common/RouteLoader'));
 const RecoilRoot = dynamic(() => import('components/common/RecoilRoot'));
 const Dialog = dynamic(() => import('components/common/Dialog'));
-const SessionProvider = dynamic<SessionProviderProps>(() =>
-  import('next-auth/react').then((mod) => mod.SessionProvider)
+const SessionProvider = dynamic<SessionProviderProps>(
+  () => import('next-auth/react').then((mod) => mod.SessionProvider),
+  { ssr: false }
 );
 const SessionChecker = dynamic(
-  () => import('components/common/SessionChecker')
+  () => import('components/common/SessionChecker'),
+  { ssr: false }
 );
 const ReactQueryDevtools = dynamic(
-  () => import('components/common/DynamicQueryDevtools')
+  () => import('components/common/DynamicQueryDevtools'),
+  { ssr: false }
 );
 const Pincode = dynamic(() => import('components/common/Pincode/Pincode'), {
   ssr: false,

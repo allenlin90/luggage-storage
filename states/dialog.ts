@@ -1,7 +1,5 @@
 import type { ReactNode } from 'react';
 import { atom } from 'recoil';
-// import { recoilPersist } from 'recoil-persist';
-// const { persistAtom } = recoilPersist();
 
 export const openDialog = atom<boolean>({
   key: 'openDialog',

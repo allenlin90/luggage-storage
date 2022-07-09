@@ -2,13 +2,20 @@ import type { FC } from 'react';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
-import MuiAppBar from '@mui/material/AppBar';
-import MenuIcon from '@mui/icons-material/Menu';
-import { styled, Toolbar, IconButton, Typography } from '@mui/material';
 import FlexSpacer from 'components/common/FlexSpacer';
+import Notifications from './DrawerTopNav/Notifications';
+
+import {
+  styled,
+  AppBar as MuiAppBar,
+  Box,
+  Toolbar,
+  IconButton,
+  Typography,
+} from '@mui/material';
 
 import dynamic from 'next/dynamic';
-const BranchSelect = dynamic(() => import('../../BranchSelect'));
+const MenuIcon = dynamic(() => import('@mui/icons-material/Menu'));
 
 export interface DrawerTopNavProps {
   open?: boolean;
@@ -44,8 +51,9 @@ export const DrawerTopNav: FC<DrawerTopNavProps> = ({
   onClick = () => console.warn('no callback giving to DrawerTopNav'),
 }) => {
   const { asPath } = useRouter();
-  const [onPath, setOnPath] = useState<string>('');
   const { t } = useTranslation('common');
+  const [onPath, setOnPath] = useState<string>('');
+
   useEffect(() => {
     const paths = asPath.split('/');
     setOnPath(paths[1]);
@@ -54,23 +62,25 @@ export const DrawerTopNav: FC<DrawerTopNavProps> = ({
   }, [asPath]);
 
   return (
-    <AppBar open={open} position='fixed' isMobile={isMobile} elevation={0}>
+    <AppBar open={open} position="fixed" isMobile={isMobile} elevation={0}>
       <Toolbar>
         <IconButton
-          size='large'
-          edge='start'
-          color='inherit'
-          aria-label='menu'
+          size="large"
+          edge="start"
+          color="inherit"
+          aria-label="menu"
           sx={{ mr: 2 }}
           onClick={onClick}
         >
           <MenuIcon />
         </IconButton>
-        <Typography fontSize='2rem' fontWeight={600}>
+        <Typography fontSize="2rem" fontWeight={600}>
           {t(`links.${onPath}`)}
         </Typography>
         <FlexSpacer />
-        {!isMobile && <BranchSelect />}
+        <Box sx={{ display: 'flex' }}>
+          <Notifications />
+        </Box>
       </Toolbar>
     </AppBar>
   );
