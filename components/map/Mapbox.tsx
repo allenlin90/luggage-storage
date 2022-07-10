@@ -12,6 +12,7 @@ import Map, {
   NavigationControl,
 } from 'react-map-gl';
 import MapboxMarkers from './MapboxMarkers';
+import { isMobile } from 'react-device-detect';
 
 const {
   publicRuntimeConfig: { MAPBOX_GL_ACCESS_TOKEN },
@@ -60,7 +61,7 @@ const Component: FC<MapboxProps> = ({ children }) => {
       doubleClickZoom
     >
       <MapboxMarkers />
-      <NavigationControl />
+      {!isMobile && <NavigationControl />}
       <FullscreenControl position="bottom-right" />
       <GeolocateControl
         ref={geoControlRef}

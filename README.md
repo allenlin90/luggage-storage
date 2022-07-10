@@ -16,6 +16,8 @@ yarn install
 ```
 
 # ENVs
+1. Create MAPBOX_TOKEN at [https://www.mapbox.com](https://www.mapbox.com/) and set up URLs whitelist.
+
 ```
 LINE_ID=[get_this_from_LINE_developer]
 LINE_SECRET=[get_this_from_LINE_developer]
