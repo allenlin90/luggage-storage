@@ -1,0 +1,6 @@
+@media (max-width: 640px) {
+  .mapboxgl-ctrl-geocoder {
+    max-width: calc(100vw - 48px - 20px) !important;
+    min-width: 0 !important;
+  }
+}

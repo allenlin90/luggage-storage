@@ -1,3 +1,4 @@
+import 'styles/mapbox-geocoder.css';
 import type { AppProps } from 'next/app';
 import type { NextPage } from 'next';
 import type { ReactElement } from 'react';

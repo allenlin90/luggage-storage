@@ -1,69 +1,69 @@
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
-import type { FC, MutableRefObject } from 'react';
-import type { Map as MapboxMap } from 'mapbox-gl';
+import type { FC } from 'react';
+import type { ControlPosition } from 'react-map-gl';
 import type MapboxGeocoderType from '@mapbox/mapbox-gl-geocoder';
-import getConfig from 'next/config';
-import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'next-i18next';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
-import {
-  geocoderConfigState,
-  geocoderPositionState,
-  markersState,
-} from 'states/map';
-import { useMap } from 'react-map-gl';
+import { useRecoilValue } from 'recoil';
+import { geocoderConfigState } from 'states/map';
+import { useControl } from 'react-map-gl';
+import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 
-const {
-  publicRuntimeConfig: { MAPBOX_GL_ACCESS_TOKEN },
-} = getConfig();
+type GeocoderControlProps = Omit<
+  MapboxGeocoderType.GeocoderOptions,
+  'accessToken' | 'mapboxgl' | 'marker'
+> & {
+  accessToken: string;
+  position?: ControlPosition;
+  onLoading?: (e: object) => void;
+  onResults?: (e: { results: MapboxGeocoderType.Results }) => void;
+  onResult?: (e: { result: MapboxGeocoderType.Result }) => void;
+  onError?: (e: object) => void;
+};
 
-export interface MapBoxGeocoderProps {
-  geocoderRef?: MutableRefObject<MapboxGeocoder | null>;
-}
-
-export const MapBoxGeocoder: FC<MapBoxGeocoderProps> = ({
-  geocoderRef = { current: null },
+export const MapBoxGeocoder: FC<GeocoderControlProps> = ({
+  accessToken,
+  position = 'top-left',
+  onLoading,
+  onResult,
+  onResults,
+  onError,
 }) => {
-  const { current: map } = useMap();
   const { t } = useTranslation('map');
   const geocoderConfig = useRecoilValue(geocoderConfigState);
-  const geocoderPosition = useRecoilValue(geocoderPositionState);
-  const setMarkers = useSetRecoilState(markersState);
 
-  const options = useMemo(() => {
-    return {
-      accessToken: MAPBOX_GL_ACCESS_TOKEN,
-      mapboxgl: map as unknown as MapboxMap,
-      placeholder: t('search'),
-      // add marker with custom function
-      marker: false, //This doesn't work with react-map-gl
-      ...geocoderConfig,
-    };
-  }, [map, t, geocoderConfig]);
+  useControl<MapboxGeocoder>(
+    () => {
+      const ctrl = new MapboxGeocoder({
+        ...geocoderConfig,
+        marker: false,
+        accessToken,
+        placeholder: t('search'),
+      });
 
-  useEffect(() => {
-    const initGeocoder = async () => {
-      const MapboxGeocoder = await import('@mapbox/mapbox-gl-geocoder').then(
-        (mod) => mod.default
-      );
+      if (onLoading) {
+        ctrl.on('loading', onLoading);
+      }
 
-      geocoderRef.current = new MapboxGeocoder(options);
+      if (onResults) {
+        ctrl.on('results', onResults);
+      }
 
-      map?.addControl(geocoderRef.current, geocoderPosition);
-      geocoderRef.current.on(
-        'result',
-        ({ result }: { result: MapboxGeocoderType.Result }) => {
-          const [lng, lat] = result.center;
-          const id = result?.id?.toString() ?? Date.now().toString();
-          setMarkers([{ id, lat, lng }]);
-        }
-      );
-    };
+      if (onResult) {
+        ctrl.on('result', onResult);
+      }
 
-    if (!geocoderRef.current) {
-      initGeocoder();
-    }
-  }, [map, options, geocoderPosition, setMarkers, geocoderRef]);
+      if (onError) {
+        ctrl.on('error', onError);
+      } else {
+        ctrl.on('error', ({ error }) => {
+          console.log(error);
+        });
+      }
+
+      return ctrl;
+    },
+    { position }
+  );
 
   return null;
 };

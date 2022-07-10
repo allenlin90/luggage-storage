@@ -1,5 +1,5 @@
 import type { UserCoords, MapMarker } from 'types/map';
-import type { MapboxOptions } from 'mapbox-gl';
+import type { ControlPosition } from 'react-map-gl';
 import type {
   GeocoderOptions,
   LngLatLiteral,
@@ -19,7 +19,7 @@ export const markersState = atom<MapMarker[]>({
   default: [],
 });
 
-export const geocoderPositionState = atom<MapboxOptions['logoPosition']>({
+export const geocoderPositionState = atom<ControlPosition>({
   key: 'geocoderPosition',
   default: 'top-left',
 });

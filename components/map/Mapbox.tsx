@@ -1,9 +1,9 @@
 import 'mapbox-gl/dist/mapbox-gl.css';
-import type { FC, ReactNode, MutableRefObject } from 'react';
+import type { FC, ReactNode } from 'react';
 import type { GeolocateControlRef } from 'react-map-gl';
 import { useEffect, useRef } from 'react';
-import getConfig from 'next/config';
 import { useGeolocation } from 'react-use';
+import { isMobile } from 'react-device-detect';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { userCoordsState, markersState } from 'states/map';
 import Map, {
@@ -12,19 +12,13 @@ import Map, {
   NavigationControl,
 } from 'react-map-gl';
 import MapboxMarkers from './MapboxMarkers';
-import { isMobile } from 'react-device-detect';
-
-const {
-  publicRuntimeConfig: { MAPBOX_GL_ACCESS_TOKEN },
-} = getConfig();
 
 export interface MapboxProps {
-  containerRef?: MutableRefObject<ReactNode>;
-  geocoderRef?: MutableRefObject<MapboxGeocoder | null>;
+  accessToken: string;
   children?: ReactNode;
 }
 
-const Component: FC<MapboxProps> = ({ children }) => {
+const Component: FC<MapboxProps> = ({ children, accessToken }) => {
   const geo = useGeolocation();
   const geoControlRef = useRef<GeolocateControlRef | null>(null);
   const setMarkers = useSetRecoilState(markersState);
@@ -47,7 +41,7 @@ const Component: FC<MapboxProps> = ({ children }) => {
 
   return (
     <Map
-      mapboxAccessToken={MAPBOX_GL_ACCESS_TOKEN}
+      mapboxAccessToken={accessToken}
       initialViewState={{
         latitude: userCoords?.lat ?? 13.736717,
         longitude: userCoords?.lng ?? 100.523186,

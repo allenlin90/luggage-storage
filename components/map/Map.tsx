@@ -1,8 +1,14 @@
-import { FC, ReactNode, useEffect } from 'react';
-import { useRef } from 'react';
+import type { FC } from 'react';
+import getConfig from 'next/config';
+import { useSetRecoilState } from 'recoil';
+import { markersState } from 'states/map';
 import { Box } from '@mui/material';
 import { MapProvider } from 'react-map-gl';
 import Loader from 'components/common/Loader';
+
+const {
+  publicRuntimeConfig: { MAPBOX_GL_ACCESS_TOKEN },
+} = getConfig();
 
 import dynamic from 'next/dynamic';
 const Mapbox = dynamic(() => import('./Mapbox'), {
@@ -15,19 +21,10 @@ const MapBoxGeocoder = dynamic(() => import('./MapboxGeocoder'), {
 });
 
 export const Map: FC = () => {
-  const mapContainerRef = useRef<ReactNode>(null);
-  const geocoderRef = useRef<MapboxGeocoder | null>(null);
-
-  useEffect(() => {
-    return () => {
-      mapContainerRef.current = null;
-      geocoderRef.current = null;
-    };
-  }, []);
+  const setMarkers = useSetRecoilState(markersState);
 
   return (
     <Box
-      ref={mapContainerRef}
       width="100%"
       height="100%"
       sx={{
@@ -37,8 +34,22 @@ export const Map: FC = () => {
       }}
     >
       <MapProvider>
-        <Mapbox containerRef={mapContainerRef} geocoderRef={geocoderRef}>
-          <MapBoxGeocoder geocoderRef={geocoderRef} />
+        <Mapbox accessToken={MAPBOX_GL_ACCESS_TOKEN}>
+          <MapBoxGeocoder
+            accessToken={MAPBOX_GL_ACCESS_TOKEN}
+            onResult={(e) => {
+              const { result } = e;
+              const [lng, lat] =
+                result &&
+                (result.center ||
+                  (result.geometry?.type === 'Point' &&
+                    result.geometry.coordinates));
+              if (location) {
+                const id = result?.id?.toString() || Date.now().toString();
+                setMarkers([{ id, lng, lat }]);
+              }
+            }}
+          />
         </Mapbox>
       </MapProvider>
     </Box>
