@@ -57,7 +57,7 @@ APP_ENV=local
    3. [ ] Edit uploaded table data
 
 # Map
-1. [ ] Setup map view with MapBox (or Google Maps)
+1. [x] Setup map view with MapBox (or Google Maps)
 2. Tracking on user loction
    1. [ ] Silent tracking (accept by users)
    2. [ ] Battery saving (prevent draining)

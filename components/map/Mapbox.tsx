@@ -1,17 +1,17 @@
 import 'mapbox-gl/dist/mapbox-gl.css';
 import type { FC, ReactNode, MutableRefObject } from 'react';
-import type { MapRef, GeolocateControlRef } from 'react-map-gl';
-import { useEffect, useMemo, useRef } from 'react';
+import type { GeolocateControlRef } from 'react-map-gl';
+import { useEffect, useRef } from 'react';
 import getConfig from 'next/config';
 import { useGeolocation } from 'react-use';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { userCoordsState, markersState } from 'states/map';
 import Map, {
-  Marker,
   FullscreenControl,
   GeolocateControl,
   NavigationControl,
 } from 'react-map-gl';
+import MapboxMarkers from './MapboxMarkers';
 
 const {
   publicRuntimeConfig: { MAPBOX_GL_ACCESS_TOKEN },
@@ -19,48 +19,33 @@ const {
 
 export interface MapboxProps {
   containerRef?: MutableRefObject<ReactNode>;
+  geocoderRef?: MutableRefObject<MapboxGeocoder | null>;
+  children?: ReactNode;
 }
 
-const Mapbox: FC<MapboxProps> = ({ containerRef = { current: null } }) => {
+const Component: FC<MapboxProps> = ({ children }) => {
   const geo = useGeolocation();
-  const mapRef = useRef<MapRef | null>(null);
   const geoControlRef = useRef<GeolocateControlRef | null>(null);
+  const setMarkers = useSetRecoilState(markersState);
   const [userCoords, setUserCoords] = useRecoilState(userCoordsState);
-  const [markers, setMarkers] = useRecoilState(markersState);
-
-  const Markers = useMemo(() => {
-    return markers.map(({ id, lat, lng }) => (
-      <Marker
-        key={id}
-        color="red"
-        longitude={lng}
-        latitude={lat}
-        draggable
-      ></Marker>
-    ));
-  }, [markers]);
 
   useEffect(() => {
     if (geo.latitude && geo.longitude) {
+      // update only when geo changes
       if (!userCoords) {
         setUserCoords({ lat: geo.latitude, lng: geo.longitude });
       }
-      setMarkers((val) => {
-        return [
-          ...val,
-          {
-            id: Date.now().toString(),
-            lat: geo.latitude ?? 13.736717,
-            lng: geo.longitude ?? 100.523186,
-          },
-        ];
-      });
     }
   }, [geo.latitude, geo.longitude, setUserCoords, userCoords, setMarkers]);
 
+  useEffect(() => {
+    return () => {
+      geoControlRef.current = null;
+    };
+  }, []);
+
   return (
     <Map
-      ref={mapRef}
       mapboxAccessToken={MAPBOX_GL_ACCESS_TOKEN}
       initialViewState={{
         latitude: userCoords?.lat ?? 13.736717,
@@ -74,7 +59,7 @@ const Mapbox: FC<MapboxProps> = ({ containerRef = { current: null } }) => {
       trackResize
       doubleClickZoom
     >
-      {Markers}
+      <MapboxMarkers />
       <NavigationControl />
       <FullscreenControl position="bottom-right" />
       <GeolocateControl
@@ -82,8 +67,11 @@ const Mapbox: FC<MapboxProps> = ({ containerRef = { current: null } }) => {
         trackUserLocation
         position="bottom-right"
       />
+      {children}
     </Map>
   );
 };
 
+// export const Mapbox = memo(Component);
+export const Mapbox = Component;
 export default Mapbox;

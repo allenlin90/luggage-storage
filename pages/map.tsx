@@ -9,8 +9,7 @@ import Map from 'components/map/Map';
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
   return {
     props: {
-      ...(locale &&
-        (await serverSideTranslations(locale, ['common', 'dashboard']))),
+      ...(locale && (await serverSideTranslations(locale, ['common', 'map']))),
     },
   };
 };
