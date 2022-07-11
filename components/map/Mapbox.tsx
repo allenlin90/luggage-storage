@@ -1,52 +1,47 @@
 import 'mapbox-gl/dist/mapbox-gl.css';
 import type { FC, ReactNode } from 'react';
-import type { GeolocateControlRef } from 'react-map-gl';
-import { useEffect, useRef } from 'react';
-import { useGeolocation } from 'react-use';
-import { isMobile } from 'react-device-detect';
-import { useRecoilState, useSetRecoilState } from 'recoil';
-import { userCoordsState, markersState } from 'states/map';
-import Map, {
-  FullscreenControl,
-  GeolocateControl,
-  NavigationControl,
+import type {
+  FullscreenControlProps,
+  GeolocateControlProps,
+  NavigationControlProps,
 } from 'react-map-gl';
-import MapboxMarkers from './MapboxMarkers';
+import { isMobile } from 'react-device-detect';
+import Map from 'react-map-gl';
+
+import dynamic from 'next/dynamic';
+const FullscreenControl = dynamic<FullscreenControlProps>(() =>
+  import('react-map-gl').then((mod) => mod.FullscreenControl)
+);
+const GeolocateControl = dynamic<GeolocateControlProps>(() =>
+  import('react-map-gl').then((mod) => mod.GeolocateControl)
+);
+const NavigationControl = dynamic<NavigationControlProps>(() =>
+  import('react-map-gl').then((mod) => mod.NavigationControl)
+);
 
 export interface MapboxProps {
   accessToken: string;
   children?: ReactNode;
+  fullscreenControl?: boolean;
+  geoLocateControl?: boolean;
+  initialViewState?: {
+    latitude: number;
+    longitude: number;
+    zoom?: number;
+  };
 }
 
-const Component: FC<MapboxProps> = ({ children, accessToken }) => {
-  const geo = useGeolocation();
-  const geoControlRef = useRef<GeolocateControlRef | null>(null);
-  const setMarkers = useSetRecoilState(markersState);
-  const [userCoords, setUserCoords] = useRecoilState(userCoordsState);
-
-  useEffect(() => {
-    if (geo.latitude && geo.longitude) {
-      // update only when geo changes
-      if (!userCoords) {
-        setUserCoords({ lat: geo.latitude, lng: geo.longitude });
-      }
-    }
-  }, [geo.latitude, geo.longitude, setUserCoords, userCoords, setMarkers]);
-
-  useEffect(() => {
-    return () => {
-      geoControlRef.current = null;
-    };
-  }, []);
-
+const Component: FC<MapboxProps> = ({
+  children,
+  accessToken,
+  fullscreenControl = false,
+  geoLocateControl = false,
+  initialViewState,
+}) => {
   return (
     <Map
       mapboxAccessToken={accessToken}
-      initialViewState={{
-        latitude: userCoords?.lat ?? 13.736717,
-        longitude: userCoords?.lng ?? 100.523186,
-        zoom: 13,
-      }}
+      initialViewState={initialViewState}
       style={{ width: '100%', height: '100%' }}
       mapStyle="mapbox://styles/mapbox/streets-v9"
       reuseMaps // prevent unncessary unmounting
@@ -54,14 +49,9 @@ const Component: FC<MapboxProps> = ({ children, accessToken }) => {
       trackResize
       doubleClickZoom
     >
-      <MapboxMarkers />
       {!isMobile && <NavigationControl />}
-      <FullscreenControl position="bottom-right" />
-      <GeolocateControl
-        ref={geoControlRef}
-        trackUserLocation
-        position="bottom-right"
-      />
+      {fullscreenControl && <FullscreenControl position="bottom-right" />}
+      {geoLocateControl && <GeolocateControl position="bottom-right" />}
       {children}
     </Map>
   );
