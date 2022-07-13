@@ -8,7 +8,7 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 });
 
 const nextConfig = {
-  // reactStrictMode: true,
+  reactStrictMode: true,
   i18n,
   images: {
     domains: ['flagcdn.com', 'images.unsplash.com'],

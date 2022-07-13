@@ -1,13 +1,16 @@
 import type { FC } from 'react';
 import getConfig from 'next/config';
-import { useSetRecoilState } from 'recoil';
-import { markersState } from 'states/map';
+import { useEffect } from 'react';
+import { useGeolocation } from 'react-use';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { userCoordsState, markersState } from 'states/map';
 import { Box } from '@mui/material';
 import { MapProvider } from 'react-map-gl';
-import Loader from 'components/common/Loader';
+import Loader from 'components/common/loader/Loader';
+import MapboxMarkers from './MapboxMarkers';
 
 const {
-  publicRuntimeConfig: { MAPBOX_GL_ACCESS_TOKEN },
+  publicRuntimeConfig: { MAPBOX_GL_ACCESS_TOKEN: accessToken },
 } = getConfig();
 
 import dynamic from 'next/dynamic';
@@ -21,7 +24,18 @@ const MapBoxGeocoder = dynamic(() => import('./MapboxGeocoder'), {
 });
 
 export const Map: FC = () => {
+  const geo = useGeolocation();
   const setMarkers = useSetRecoilState(markersState);
+  const [userCoords, setUserCoords] = useRecoilState(userCoordsState);
+
+  useEffect(() => {
+    if (geo.latitude && geo.longitude) {
+      // update only when geo changes
+      if (!userCoords) {
+        setUserCoords({ lat: geo.latitude, lng: geo.longitude });
+      }
+    }
+  }, [geo.latitude, geo.longitude, setUserCoords, userCoords, setMarkers]);
 
   return (
     <Box
@@ -34,9 +48,19 @@ export const Map: FC = () => {
       }}
     >
       <MapProvider>
-        <Mapbox accessToken={MAPBOX_GL_ACCESS_TOKEN}>
+        <Mapbox
+          accessToken={accessToken}
+          fullscreenControl
+          geoLocateControl
+          initialViewState={{
+            latitude: userCoords?.lat ?? 13.736717,
+            longitude: userCoords?.lng ?? 100.523186,
+            zoom: 13,
+          }}
+        >
+          <MapboxMarkers />
           <MapBoxGeocoder
-            accessToken={MAPBOX_GL_ACCESS_TOKEN}
+            accessToken={accessToken}
             onResult={(e) => {
               const { result } = e;
               const [lng, lat] =

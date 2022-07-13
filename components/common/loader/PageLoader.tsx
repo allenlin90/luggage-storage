@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import { Box as MuiBox, Fade, styled } from '@mui/material';
-import Loader from 'components/common/Loader';
+import Loader from './Loader';
 
 const Box = styled(MuiBox)(({ theme }) => ({
   width: '100vw',

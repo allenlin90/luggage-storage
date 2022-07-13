@@ -3,7 +3,7 @@ import type { GetStaticProps } from 'next';
 import type { NextPageWithLayout } from './_app';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Seo from 'components/common/Seo';
-import Layout from 'components/common/Layout/Layout';
+import Layout from 'components/layouts/Layout';
 import { Button } from '@mui/material';
 import { useSetRecoilState } from 'recoil';
 import { pincodeState } from 'states';
