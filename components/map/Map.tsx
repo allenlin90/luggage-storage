@@ -1,13 +1,11 @@
-import type { FC } from 'react';
+import type { FC, ReactNode } from 'react';
 import getConfig from 'next/config';
 import { useEffect } from 'react';
 import { useGeolocation } from 'react-use';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { userCoordsState, markersState } from 'states/map';
 import { Box } from '@mui/material';
-import { MapProvider } from 'react-map-gl';
 import Loader from 'components/common/loader/Loader';
-import MapboxMarkers from './MapboxMarkers';
 
 const {
   publicRuntimeConfig: { MAPBOX_GL_ACCESS_TOKEN: accessToken },
@@ -18,8 +16,14 @@ const Mapbox = dynamic(() => import('./Mapbox'), {
   loading: () => <Loader />,
   ssr: false,
 });
+const MapProvider = dynamic<{ children?: ReactNode }>(
+  () => import('react-map-gl').then((mod) => mod.MapProvider),
+  { ssr: false }
+);
 const MapBoxGeocoder = dynamic(() => import('./MapboxGeocoder'), {
-  loading: () => <Loader />,
+  ssr: false,
+});
+const MapboxMarkers = dynamic(() => import('./MapboxMarkers'), {
   ssr: false,
 });
 
