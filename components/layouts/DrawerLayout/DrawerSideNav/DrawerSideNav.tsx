@@ -7,7 +7,7 @@ import DrawerSideHead from './DrawerSideHead';
 import DrawerSideLinks from './DrawerSideLinks';
 
 import dynamic from 'next/dynamic';
-const BranchSelect = dynamic(() => import('../../../BranchSelect'));
+const BranchSelect = dynamic(() => import('components/common/BranchSelect'));
 
 export interface DrawerSideNav {
   screenWidth?: number;
@@ -30,7 +30,7 @@ export const DrawerSideNav: FC<DrawerSideNav> = ({
 
   return (
     <Drawer
-      anchor='left'
+      anchor="left"
       variant={screenWidth > breakPoint ? 'persistent' : 'temporary'}
       open={open}
       onClose={onClose}

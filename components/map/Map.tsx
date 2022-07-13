@@ -6,7 +6,7 @@ import { useRecoilState, useSetRecoilState } from 'recoil';
 import { userCoordsState, markersState } from 'states/map';
 import { Box } from '@mui/material';
 import { MapProvider } from 'react-map-gl';
-import Loader from 'components/common/Loader';
+import Loader from 'components/common/loader/Loader';
 import MapboxMarkers from './MapboxMarkers';
 
 const {

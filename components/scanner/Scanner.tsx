@@ -9,7 +9,7 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { Box, Backdrop, IconButton, styled } from '@mui/material';
 
 import dynamic from 'next/dynamic';
-const Loader = dynamic(() => import('components/common/Loader'));
+const Loader = dynamic(() => import('components/common/loader/Loader'));
 const ScannerButtons = dynamic(() => import('./ScannerButtons'));
 const ScannerTitle = dynamic(() => import('./ScannerTitle'));
 const CancelIcon = dynamic(() => import('@mui/icons-material/Cancel'));

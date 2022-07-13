@@ -27,10 +27,11 @@ APP_ENV=local
 ```
 
 # Global features
-1. [x] Redirect user to login when session expires
+1. Redirect user to login when session expires [x] 
 2. [ ] Data/Request handling `react-query` 
 4. [ ] Backend data loading
-5. Remeber user previous loction when redirecting
+5. [ ] SEO
+6. Remeber user previous loction when redirecting
    1. [ ] Login
    2. [ ] Authentication with pincode
 
@@ -72,11 +73,11 @@ APP_ENV=local
    1. [ ] Coloring
    2. [ ] Dark mode
 
-# General Components
+# General UI Components
 1. [x] Connection indicator, showing if the device is online/offline.
 2. [x] Route loader triggers when switching between paths.
 3. [x] Dialog controlled by 4 recoil states `open`, `title`, `body`, and `action`.
-4. [x] Pin panel for 4 - 6 digits
+4. [x] Pin panel for 4 - 6 digits (or more)
 5. [ ] Image processing (upload and preview)
 6. Custom error fallback page
    1. [ ] 404
@@ -91,15 +92,19 @@ APP_ENV=local
 1. [ ] Manifest
 2. [ ] Splash screen
 3. [ ] App icons
-4. [ ] Offline mode
+4. Offline mode
+   1. [ ] Offline fallback page
 5. [ ] Service worker
-6. [ ] Web worker
-7. [ ] Push notification
-8. [ ] IndexedDB
+6. [ ] Push notification
+
+# Performance
+1. [ ] Lighthouse performance index, avg. 90
+2. [ ] Web worker(s) (comlink)
+3. [ ] IndexedDB
 
 # Tests and performance
-1. [ ] Unit test coverage > 80%
-2. [ ] Lighthouse performance index, avg. 90
+1. [ ] Story book integration
+2. [ ] Unit test coverage > 80%
 
 ## CI/CD 
 1. [x] Deploy to Vercel

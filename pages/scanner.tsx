@@ -3,7 +3,7 @@ import type { GetStaticProps } from 'next';
 import type { NextPageWithLayout } from './_app';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Seo from 'components/common/Seo';
-import Layout from 'components/common/Layout/Layout';
+import Layout from 'components/layouts/Layout';
 import ScannerPanel from 'components/scanner/ScannerPanel';
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
@@ -18,7 +18,7 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
 export const ScannerPage: NextPageWithLayout = () => {
   return (
     <>
-      <Seo title='Scanner' />
+      <Seo title="Scanner" />
       <ScannerPanel />
     </>
   );

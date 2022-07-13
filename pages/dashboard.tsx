@@ -3,7 +3,7 @@ import type { GetServerSideProps } from 'next';
 import type { NextPageWithLayout } from './_app';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Seo from 'components/common/Seo';
-import Layout from 'components/common/Layout/Layout';
+import Layout from 'components/layouts/Layout';
 
 export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
   return {
@@ -17,7 +17,7 @@ export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
 export const DashboardPage: NextPageWithLayout = () => {
   return (
     <>
-      <Seo title='Dashboard' />
+      <Seo title="Dashboard" />
       Dashboard
     </>
   );

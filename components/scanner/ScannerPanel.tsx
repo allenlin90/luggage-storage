@@ -18,7 +18,7 @@ const IconButton = styled(MuiIconButton)(() => ({
 }));
 
 import dynamic from 'next/dynamic';
-const Scanner = dynamic(() => import('./Scanner/Scanner'), { ssr: false });
+const Scanner = dynamic(() => import('./Scanner'), { ssr: false });
 const QrCodeScannerIcon = dynamic(
   () => import('@mui/icons-material/QrCodeScanner'),
   { ssr: false }
@@ -56,15 +56,15 @@ export const ScannerPanel: FC = () => {
       <Container>
         {isDenied ? (
           <Box>
-            <Typography variant='body1'>{t('title.cameraDenied')}</Typography>
+            <Typography variant="body1">{t('title.cameraDenied')}</Typography>
             <Button onClick={() => router.reload()}>{t('btn.reload')}</Button>
           </Box>
         ) : (
           <>
             <IconButton
-              size='large'
+              size="large"
               disabled={isScanning}
-              aria-label='qr-reader-button'
+              aria-label="qr-reader-button"
               onClick={() => {
                 setIsScanning((oldVal) => !oldVal);
               }}

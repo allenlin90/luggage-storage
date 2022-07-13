@@ -18,7 +18,9 @@ import dynamic from 'next/dynamic';
 const DefaultSeo = dynamic<DefaultSeoProps>(() =>
   import('next-seo').then((mod) => mod.DefaultSeo)
 );
-const RouteLoader = dynamic(() => import('components/common/RouteLoader'));
+const RouteLoader = dynamic(
+  () => import('components/common/loader/RouteLoader')
+);
 const RecoilRoot = dynamic(() => import('components/common/RecoilRoot'));
 const Dialog = dynamic(() => import('components/common/Dialog'));
 const SessionProvider = dynamic<SessionProviderProps>(
@@ -33,7 +35,7 @@ const ReactQueryDevtools = dynamic(
   () => import('components/common/DynamicQueryDevtools'),
   { ssr: false }
 );
-const Pincode = dynamic(() => import('components/common/Pincode/Pincode'), {
+const Pincode = dynamic(() => import('components/common/pincode/Pincode'), {
   ssr: false,
 });
 const OnlineIndicator = dynamic(
