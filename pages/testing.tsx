@@ -3,7 +3,7 @@ import type { GetStaticProps } from 'next';
 import type { NextPageWithLayout } from './_app';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Seo from 'components/common/Seo';
-import Layout from 'components/layouts/Layout';
+import DrawerLayout from 'components/layouts/drawerLayout/DrawerLayout';
 import { Button } from '@mui/material';
 import { useSetRecoilState } from 'recoil';
 import { pincodeState } from 'states';
@@ -29,7 +29,7 @@ export const TestingPage: NextPageWithLayout = () => {
 };
 
 TestingPage.getLayout = (page: ReactNode) => {
-  return <Layout>{page}</Layout>;
+  return <DrawerLayout>{page}</DrawerLayout>;
 };
 
 export default TestingPage;
