@@ -2,7 +2,7 @@ import type { GetStaticProps } from 'next';
 import type { ReactNode } from 'react';
 import type { NextPageWithLayout } from './_app';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import Layout from 'components/layouts/Layout';
+import DrawerLayout from 'components/layouts/drawerLayout/DrawerLayout';
 import Seo from 'components/common/Seo';
 import Settings from 'components/settings/Settings';
 
@@ -25,7 +25,7 @@ export const SettingsPage: NextPageWithLayout = () => {
 };
 
 SettingsPage.getLayout = (page: ReactNode) => {
-  return <Layout>{page}</Layout>;
+  return <DrawerLayout>{page}</DrawerLayout>;
 };
 
 export default SettingsPage;

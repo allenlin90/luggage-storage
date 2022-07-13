@@ -3,7 +3,7 @@ import type { GetStaticProps } from 'next';
 import type { NextPageWithLayout } from './_app';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Seo from 'components/common/Seo';
-import Layout from 'components/layouts/Layout';
+import DrawerLayout from 'components/layouts/drawerLayout/DrawerLayout';
 import Map from 'components/map/Map';
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
@@ -24,7 +24,7 @@ export const MapPage: NextPageWithLayout = () => {
 };
 
 MapPage.getLayout = (page: ReactNode) => {
-  return <Layout>{page}</Layout>;
+  return <DrawerLayout fillContainer>{page}</DrawerLayout>;
 };
 
 export default MapPage;

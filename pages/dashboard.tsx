@@ -3,7 +3,7 @@ import type { GetServerSideProps } from 'next';
 import type { NextPageWithLayout } from './_app';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Seo from 'components/common/Seo';
-import Layout from 'components/layouts/Layout';
+import DrawerLayout from 'components/layouts/drawerLayout/DrawerLayout';
 
 export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
   return {
@@ -24,7 +24,7 @@ export const DashboardPage: NextPageWithLayout = () => {
 };
 
 DashboardPage.getLayout = (page: ReactNode) => {
-  return <Layout>{page}</Layout>;
+  return <DrawerLayout fillContainer>{page}</DrawerLayout>;
 };
 
 export default DashboardPage;
