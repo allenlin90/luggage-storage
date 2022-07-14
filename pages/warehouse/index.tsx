@@ -3,7 +3,7 @@ import type { GetServerSideProps } from 'next';
 import type { NextPageWithLayout } from '../_app';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { WarehouseProvider } from 'context';
-import Layout from 'components/layouts/Layout';
+import DrawerLayout from 'components/layouts/drawerLayout/DrawerLayout';
 import Seo from 'components/common/Seo';
 import Warehouse from 'components/warehouse/Warehouse';
 
@@ -27,7 +27,7 @@ export const WarehousePage: NextPageWithLayout = () => {
 };
 
 WarehousePage.getLayout = (page: ReactNode) => {
-  return <Layout>{page}</Layout>;
+  return <DrawerLayout fillContainer>{page}</DrawerLayout>;
 };
 
 export default WarehousePage;

@@ -11,6 +11,9 @@
     "notification": {
       "notifications": "Notifications",
       "read": "Read"
+    },
+    "search": {
+      "placeholder": "Search..."
     }
   },
   "links": {

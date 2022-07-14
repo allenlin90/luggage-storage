@@ -1,118 +1,82 @@
 import type { FC } from 'react';
-import type {
-  DragStart,
-  DropResult,
-  DragDropContextProps,
-} from 'react-beautiful-dnd';
+import type { IWarehouse } from 'types/warehouse';
+import type { DropResult, DragDropContextProps } from 'react-beautiful-dnd';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 // import { useWarehouse } from 'context';
 import { Box } from '@mui/material';
 import WarehouseDrop from 'components/warehouse/dnd/WarehouseDrop';
 import WarehouseDrag from 'components/warehouse/dnd/WarehouseDrag';
+import { updateGroups } from 'utils/dnd/onDragEnd';
 
 import dynamic from 'next/dynamic';
 const DragDropContext = dynamic<DragDropContextProps>(() =>
   import('react-beautiful-dnd').then((mod) => mod.DragDropContext)
 );
 
+import { warehousesMock } from 'mocks/warehouse';
+
+type WarehouseRef = {
+  [key: string]: IWarehouse;
+};
+
 export const WarehouseDnD: FC = () => {
   // const [warehouse] = useWarehouse();
-  const [col1, setCol1] = useState([
-    { id: '1', col: '1' },
-    { id: '2', col: '1' },
-  ]);
-  const [col2, setCol2] = useState([{ id: '3', col: '2' }]);
+  const warehousesRef = useRef<WarehouseRef | null>(null);
+  const [warehouses, setWarehouses] = useState(warehousesMock ?? []);
 
-  const toggleSelection = (id: string) => {
-    console.log(id);
-  };
-  const toggleSelectionInGroup = (id: string) => {
-    console.log(id);
-  };
-  const multiSelectTo = (id: string) => {
-    console.log(id);
-  };
-  const onDragStart = (start: DragStart) => {
-    console.log(start);
-  };
+  useEffect(() => {
+    warehousesRef.current = warehouses.reduce((store, warehouse) => {
+      return { ...store, [warehouse.id]: warehouse };
+    }, {});
 
-  const onDragEnd = (result: DropResult) => {
-    const {
-      destination,
-      // draggableId,
-      source,
-    } = result;
-    let movedItem;
-    let array;
-    if (source?.droppableId === '1') {
-      array = [...col1];
-      movedItem = array.splice(source?.index, 1);
-      setCol1(array);
-    } else if (source?.droppableId === '2') {
-      array = [...col2];
-      movedItem = array.splice(source?.index, 1);
-      setCol2(array);
-    }
-
-    if (destination?.droppableId === '1') {
-      if (destination?.droppableId !== source?.droppableId) {
-        array = [...col1];
-      }
-      if (movedItem && array) {
-        array.splice(destination?.index, 0, movedItem[0]);
-        setCol1(array);
-      }
-    } else if (destination?.droppableId === '2') {
-      if (destination?.droppableId !== source?.droppableId) {
-        array = [...col2];
-      }
-      if (movedItem && array) {
-        array.splice(destination?.index, 0, movedItem[0]);
-        setCol2(array);
-      }
-    }
-
-    array = undefined;
-    movedItem = undefined;
-  };
+    return () => {
+      warehousesRef.current = null;
+    };
+  }, [warehouses]);
 
   return (
-    <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
+    <DragDropContext
+      onDragEnd={(result: DropResult) => {
+        // stop handling
+        if (!result.destination) {
+          // there's no destination (out of scope)
+          return;
+        }
+
+        const updates = updateGroups(warehouses, {
+          sourceDropId: result.source.droppableId,
+          sourceItemIndex: result.source.index,
+          destinationDropId: result.destination.droppableId,
+          destinationItemIndex: result.destination.index,
+        });
+
+        if (updates) {
+          setWarehouses(updates);
+        }
+      }}
+    >
       <Box
         sx={{
           display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
+          gridTemplateColumns: `repeat(${warehouses.length}, 1fr)`,
           gap: '1rem',
           width: '100%',
-          height: '100%',
-          boxSizing: 'border-box',
+          paddingBottom: '1.5rem',
         }}
       >
-        <WarehouseDrop id="1">
-          {col1.map((item, index) => (
-            <WarehouseDrag
-              item={item}
-              index={index}
-              key={item.id}
-              toggleSelection={toggleSelection}
-              toggleSelectionInGroup={toggleSelectionInGroup}
-              multiSelectTo={multiSelectTo}
-            />
-          ))}
-        </WarehouseDrop>
-        <WarehouseDrop id="2">
-          {col2.map((item, index) => (
-            <WarehouseDrag
-              item={item}
-              index={index}
-              key={item.id}
-              toggleSelection={toggleSelection}
-              toggleSelectionInGroup={toggleSelectionInGroup}
-              multiSelectTo={multiSelectTo}
-            />
-          ))}
-        </WarehouseDrop>
+        {warehouses.map(({ id, items }) => (
+          <WarehouseDrop key={id} id={id}>
+            {items.map((item, index) => (
+              <WarehouseDrag
+                key={item.id}
+                item={item}
+                index={index}
+                content={item?.meta?.title}
+              />
+            ))}
+          </WarehouseDrop>
+        ))}
       </Box>
     </DragDropContext>
   );

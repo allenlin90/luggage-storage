@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import FlexSpacer from 'components/common/FlexSpacer';
+import SearchBar from 'components/common/SearchBar';
 import Notifications from './DrawerTopNav/Notifications';
 
 import {
@@ -36,7 +37,6 @@ const AppBar = styled(MuiAppBar, {
     }),
     ...(open && {
       width: isMobile ? '100%' : `calc(100% - ${drawerWidth})`,
-      // marginLeft: isMobile ? 0 : drawerWidth,
       transition: theme.transitions.create(['margin', 'width'], {
         easing: theme.transitions.easing.easeOut,
         duration: theme.transitions.duration.enteringScreen,
@@ -78,6 +78,7 @@ export const DrawerTopNav: FC<DrawerTopNavProps> = ({
           {t(`links.${onPath}`)}
         </Typography>
         <FlexSpacer />
+        <SearchBar isMobile={isMobile} />
         <Box sx={{ display: 'flex' }}>
           <Notifications />
         </Box>

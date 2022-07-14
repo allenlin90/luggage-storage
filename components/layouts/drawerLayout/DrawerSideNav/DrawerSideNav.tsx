@@ -6,14 +6,10 @@ import DrawerSignout from './DrawerSignout';
 import DrawerSideHead from './DrawerSideHead';
 import DrawerSideLinks from './DrawerSideLinks';
 
-import dynamic from 'next/dynamic';
-const BranchSelect = dynamic(() => import('components/common/BranchSelect'));
-
 export interface DrawerSideNav {
   screenWidth?: number;
   drawerWidth?: string;
   breakPoint?: number;
-  isMobile?: boolean;
   open?: boolean;
   onClose?: () => void;
 }
@@ -22,7 +18,6 @@ export const DrawerSideNav: FC<DrawerSideNav> = ({
   screenWidth = 0,
   drawerWidth = '16rem',
   breakPoint = 900,
-  isMobile = true,
   open = false,
   onClose = () => console.warn('no callback is given to DrawerSideNav'),
 }) => {
@@ -44,13 +39,7 @@ export const DrawerSideNav: FC<DrawerSideNav> = ({
         placeholder={t('sideNav.warehouse')}
         // imgSrc=""
       />
-      <Divider />
-      {isMobile && (
-        <>
-          <BranchSelect isMobile={isMobile} />
-          <Divider />
-        </>
-      )}
+      <Divider sx={{ marginTop: 0 }} />
       <DrawerSideLinks />
       <FlexSpacer />
       <Divider />
