@@ -30,8 +30,9 @@ APP_ENV=local
 1. Redirect user to login when session expires [x] 
 2. [ ] Data/Request handling `react-query` 
 4. [ ] Backend data loading
-5. [ ] SEO
-6. Remeber user previous loction when redirecting
+5. [ ] Error boundary
+6. [ ] SEO
+7. Remeber user previous loction when redirecting
    1. [ ] Login
    2. [ ] Authentication with pincode
 
