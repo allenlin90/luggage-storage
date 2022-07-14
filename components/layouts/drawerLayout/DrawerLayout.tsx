@@ -56,7 +56,6 @@ export const DrawerLayout: FC<DrawerLayout> = ({
         breakPoint={breakPoint}
         onClose={() => setOpenDrawer(false)}
         screenWidth={width}
-        isMobile={isMobile}
       />
       <DrawerHeader />
       <DrawerMain

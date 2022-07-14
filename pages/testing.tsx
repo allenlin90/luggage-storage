@@ -2,11 +2,11 @@ import type { ReactNode } from 'react';
 import type { GetStaticProps } from 'next';
 import type { NextPageWithLayout } from './_app';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import Seo from 'components/common/Seo';
-import DrawerLayout from 'components/layouts/drawerLayout/DrawerLayout';
-import { Button } from '@mui/material';
 import { useSetRecoilState } from 'recoil';
 import { pincodeState } from 'states';
+import Seo from 'components/common/Seo';
+import DrawerLayout from 'components/layouts/drawerLayout/DrawerLayout';
+import { Button, Divider, Typography } from '@mui/material';
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
   return {
@@ -23,7 +23,11 @@ export const TestingPage: NextPageWithLayout = () => {
   return (
     <>
       <Seo title="Testing" />
-      <Button onClick={() => setOpen(true)}>Pincode</Button>
+      <>
+        <Typography component="h1">Pincode</Typography>
+        <Button onClick={() => setOpen(true)}>Open</Button>
+      </>
+      <Divider />
     </>
   );
 };
