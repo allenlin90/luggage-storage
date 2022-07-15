@@ -5,31 +5,32 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Seo from 'components/common/Seo';
 import getConfig from 'next/config';
 
-const {
-  publicRuntimeConfig: { local },
-} = getConfig();
-
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
+  const {
+    publicRuntimeConfig: { local },
+  } = getConfig();
+
   return {
     props: {
+      local,
       ...(locale &&
         (await serverSideTranslations(locale, ['common', 'scanner']))),
     },
   };
 };
 
-const HomePage: NextPage = () => {
-  const { push } = useRouter();
+const HomePage: NextPage<{ local?: boolean }> = ({ local = false }) => {
+  const { replace } = useRouter();
 
   useEffect(() => {
     if (local) {
-      push('/testing');
+      replace('/testing');
     } else {
-      push('/warehouse');
+      replace('/warehouse');
     }
-  }, [push]);
+  }, [replace, local]);
 
-  return <Seo title='Home' />;
+  return <Seo title="Home" />;
 };
 
 export default HomePage;
