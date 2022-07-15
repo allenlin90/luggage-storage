@@ -13,5 +13,12 @@ jobs:
       contents: write
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup yarn package manager
+        uses: c-hive/gha-yarn-cache@v2
+      - name: Install JS dependencies
+        run: yarn install
       - uses: ArtiomTr/jest-coverage-report-action@v2
+        with:
+          package-manager: yarn
