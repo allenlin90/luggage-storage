@@ -1,12 +1,33 @@
+- [App Target](#app-target)
+- [Getting Started](#getting-started)
+- [ENVs](#envs)
+- [Global features](#global-features)
+- [Authentication](#authentication)
+- [Dashboard](#dashboard)
+- [Warehouse](#warehouse)
+- [Orders/Tasks List](#orderstasks-list)
+- [Map](#map)
+- [Scanner](#scanner)
+- [Settings](#settings)
+- [General UI Components](#general-ui-components)
+- [PWA](#pwa)
+- [Performance](#performance)
+- [Tests and performance](#tests-and-performance)
+  - [CI/CD](#cicd)
+- [Reference and terminology](#reference-and-terminology)
+
 # App Target
 1. Serving most of the backend tasks for operations. Users include
-   1. Operators
-   2. Merchants
-   3. Drivers (delivery)
+   1. Helpers,
+   2. Operators,
+   3. Merchants, and
+   4. Drivers (delivery)
 2. This project is mainly for UI and frontend components without business logic
-3. Requires business logic to work with
-4. Requires backend to work with
-5. Optimized JS bundled size
+   1. Requires business logic to work with
+   2. Requires backend to work with
+3. Optimization
+   1. JS bundled size 
+   2. Loading time
 
 # Getting Started
 1. Install dependencies
@@ -21,20 +42,24 @@
 LINE_ID=[get_this_from_LINE_developer]
 LINE_SECRET=[get_this_from_LINE_developer]
 NEXTAUTH_SECRET=[generate_random_string_for_hashing]
-NEXTAUTH_URL=http://localhost:3000
+# change to hosting domain
+NEXTAUTH_URL=http://localhost:3000 
 MAPBOX_TOKEN=[get_this_from_MAPBOX]
 APP_ENV=local
 ```
 
 # Global features
-1. Redirect user to login when session expires [x] 
-2. [ ] Data/Request handling `react-query` 
-4. [ ] Backend data loading
+1. [x] Redirect user to login when session expires 
+2. [ ] Data/Request handling with `react-query`
+4. [ ] Background data loading
 5. [ ] Error boundary
 6. [ ] SEO
-7. Remeber user previous loction when redirecting
+7. [ ] Route loader
+8. [ ] Image placeholder (shimmer)
+9. Remeber user previous loction when redirecting
    1. [ ] Login
    2. [ ] Authentication with pincode
+10. [ ] In app notification - long polling/websocket
 
 # Authentication
 1. [x] Authentication by `next-auth`
@@ -47,8 +72,8 @@ APP_ENV=local
 1. [ ] Shows performance summary, metrics, etc. (Ant design or chart.js) and requires business logic
 
 # Warehouse
-1. [ ] Drag and drop items between columns (warehouses)
-2. Manage (CRUD) warehouse/locations, required business logic 
+1. [x] Drag and drop items between columns (warehouses)
+2. Manage (CRUD) warehouse/locations, required business logic
 
 # Orders/Tasks List
 1. [ ] Autocomplete search (Fuse.js)
@@ -79,15 +104,20 @@ APP_ENV=local
 2. [x] Route loader triggers when switching between paths.
 3. [x] Dialog controlled by 4 recoil states `open`, `title`, `body`, and `action`.
 4. [x] Pin panel for 4 - 6 digits (or more)
-5. [ ] Image processing (upload and preview)
+5. Image processing 
+   1. [ ] Upload and preview
+   2. [ ] Drag and drop
+   3. [ ] Multiple select
 6. Custom error fallback page
    1. [ ] 404
-   2. [ ] 500
+   2. [ ] 403
+   3. [ ] 500
 7. In app notification
    1. [x] UI
    2. [ ] Logical and control
-8. Global order search
-   1. [ ] Auto complete (orders)
+8. Global search
+   1. [ ] Autocomplete (with fuzzy/full-text search)
+9. [ ] AR direction instruction
 
 # PWA 
 1. [ ] Manifest
@@ -110,6 +140,16 @@ APP_ENV=local
 ## CI/CD 
 1. [x] Deploy to Vercel
 2. Github actions
-   1. [ ] Build breaker
-   2. [ ] Dependbot
-   3. [ ] Test coverage report
+   1. [x] Test coverage report
+   2. [ ] Build breaker
+   3. [ ] Dependbot
+
+# Reference and terminology
+1. Global search
+   1. Full-text-search
+   2. Fuzzy search
+2. Libraries for DND and drag select
+   1. [react-beautiful-dnd](https://www.npmjs.com/package/react-beautiful-dnd)
+   2. [dragselect](https://www.npmjs.com/package/dragselect)
+   3. [interactjs](https://www.npmjs.com/package/interactjs)
+3. Multi-threading
