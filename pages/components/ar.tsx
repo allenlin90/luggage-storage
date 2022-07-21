@@ -1,14 +1,19 @@
 import type { ReactNode } from 'react';
 import type { GetStaticProps } from 'next';
 import type { NextPageWithLayout } from '../_app';
-import { useEffect } from 'react';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useRecoilValue, useSetRecoilState, useRecoilState } from 'recoil';
+import { arState, camerasState, selectedCameraState } from 'states';
 import Seo from 'components/common/Seo';
-import AugmentedReality from 'components/common/AugmentedReality';
 import DrawerLayout from 'components/layouts/drawerLayout/DrawerLayout';
-import { Button } from '@mui/material';
-import { useSetRecoilState } from 'recoil';
-import { arState } from 'states';
+import { Button, MenuItem } from '@mui/material';
+
+import dynamic from 'next/dynamic';
+const Select = dynamic(() => import('@mui/material/Select'));
+const AugmentedReality = dynamic(
+  () => import('components/common/AugmentedReality'),
+  { ssr: false }
+);
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
   return {
@@ -21,13 +26,25 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
 
 export const TestingPage: NextPageWithLayout = () => {
   const setOpen = useSetRecoilState(arState);
-  useEffect(() => {
-    return () => setOpen(false);
-  }, [setOpen]);
+  const cameras = useRecoilValue(camerasState);
+  const [selectedCamera, setSelectedCamera] =
+    useRecoilState(selectedCameraState);
 
   return (
     <>
       <Seo title="Augmented Reality" />
+      <Select
+        size="small"
+        value={selectedCamera}
+        onChange={(event) => setSelectedCamera(event.target.value as string)}
+      >
+        {cameras.map(({ id, label }) => (
+          <MenuItem key={id} value={id}>
+            {label}
+          </MenuItem>
+        ))}
+      </Select>
+      <br />
       <Button variant="contained" onClick={() => setOpen(true)}>
         Start
       </Button>

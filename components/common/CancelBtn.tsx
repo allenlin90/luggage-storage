@@ -17,6 +17,7 @@ export const CancelBtn: FC<ICancelBtnProps> = ({
         position: 'absolute',
         top: 20,
         left: 20,
+        zIndex: (theme) => theme.zIndex.drawer + 1,
       }}
       onClick={onClick}
     >
