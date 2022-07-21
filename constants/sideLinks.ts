@@ -19,6 +19,11 @@ export const sideLinks = [
     href: '/scanner',
     title: 'Scanner',
   },
+  {
+    id: 'components',
+    href: '/components',
+    title: 'Components',
+  },
 ];
 
 export default sideLinks;

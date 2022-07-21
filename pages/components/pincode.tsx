@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import type { GetStaticProps } from 'next';
-import type { NextPageWithLayout } from './_app';
+import type { NextPageWithLayout } from '../_app';
 import { useEffect } from 'react';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useSetRecoilState } from 'recoil';
@@ -29,7 +29,7 @@ export const TestingPage: NextPageWithLayout = () => {
 
   return (
     <>
-      <Seo title="Testing" />
+      <Seo title="Pincode" />
       <>
         <Typography component="h1">Pincode</Typography>
         <Button onClick={() => setOpen(true)}>Open</Button>
