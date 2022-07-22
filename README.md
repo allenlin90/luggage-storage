@@ -117,7 +117,15 @@ APP_ENV=local
    2. [ ] Logical and control
 8. Global search
    1. [ ] Autocomplete (with fuzzy/full-text search)
-9. [ ] AR direction instruction
+9. AR direction instruction
+   1. Getting user meta data
+      1. [ ] Indoor location
+      2. [ ] Moving speed
+      3. [ ] Distance to target
+   2. [ ] Image detection and tracking
+   3. Balancing tracking performance and precision
+      1. [ ] Optimize calculation speed (multi-threading)
+      2. [ ] Enhance with machine learning solutions
 
 # PWA 
 1. [ ] Manifest

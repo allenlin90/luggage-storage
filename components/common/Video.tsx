@@ -11,6 +11,7 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { camerasState, selectedCameraState } from 'states';
 import { styled } from '@mui/material';
 import { startCamera, stopCamera } from 'utils/camera';
+import { isMobile } from 'react-device-detect';
 
 const StyledVideo = styled('video')(() => ({
   position: 'absolute',
@@ -49,7 +50,9 @@ export const Video: ForwardRefExoticComponent<
             startCamera({
               video: videoRef.current,
               deviceId: selectedCamera,
-              videoConstraints: { height, width },
+              videoConstraints: isMobile
+                ? { aspectRatio: Math.ceil((height / width) * 100) / 100 }
+                : { height, width },
               onError: (error: any) => console.log(error),
             });
           }
