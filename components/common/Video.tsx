@@ -50,9 +50,11 @@ export const Video: ForwardRefExoticComponent<
             startCamera({
               video: videoRef.current,
               deviceId: selectedCamera,
-              videoConstraints: isMobile
-                ? { aspectRatio: Math.ceil((height / width) * 100) / 100 }
-                : { height, width },
+              videoConstraints: {
+                aspectRatio: isMobile
+                  ? Math.ceil((height / width) * 100) / 100
+                  : width / height,
+              },
               onError: (error: any) => console.log(error),
             });
           }
@@ -66,7 +68,11 @@ export const Video: ForwardRefExoticComponent<
           startCamera({
             video: videoRef.current,
             deviceId: selectedCamera,
-            videoConstraints: { height, width },
+            videoConstraints: {
+              aspectRatio: isMobile
+                ? Math.ceil((height / width) * 100) / 100
+                : width / height,
+            },
             onError: (error: any) => console.log(error),
           }).then((media) => {
             if (media) {
