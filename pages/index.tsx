@@ -24,7 +24,7 @@ const HomePage: NextPage<{ local?: boolean }> = ({ local = false }) => {
 
   useEffect(() => {
     if (local) {
-      replace('/testing');
+      replace('/components');
     } else {
       replace('/warehouse');
     }

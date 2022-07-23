@@ -1,17 +1,19 @@
 import type { FC } from 'react';
 import type { ICameraRef } from './Video';
 import { useEffect, useRef } from 'react';
-import { useRecoilState } from 'recoil';
-import { arState } from 'states';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { arState, testState } from 'states';
 import { Backdrop } from '@mui/material';
 import { CancelBtn } from 'components/common/CancelBtn';
-import { Video } from 'components/common/Video';
-import { Canvas } from 'components/common/Canvas';
+import { Video } from 'components/ar/Video';
+import { Canvas } from 'components/ar/Canvas';
+import UserMeta from 'components/ar/UserMeta';
 
-const AugmentedReality: FC = () => {
+export const AugmentedReality: FC = () => {
   const cameraRef = useRef<ICameraRef>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [open, setOpen] = useRecoilState(arState);
+  const testMode = useRecoilValue(testState);
 
   useEffect(() => {
     return () => {
@@ -29,6 +31,7 @@ const AugmentedReality: FC = () => {
         }}
       />
       <Video open={open} ref={cameraRef} />
+      {testMode && <UserMeta />}
       <Canvas ref={canvasRef} />
     </Backdrop>
   );

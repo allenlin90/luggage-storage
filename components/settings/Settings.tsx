@@ -4,9 +4,17 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import languages from 'constants/languages';
-import { Box, Divider, Typography } from '@mui/material';
+import {
+  Box,
+  Divider,
+  FormControlLabel,
+  Switch,
+  Typography,
+} from '@mui/material';
 
 import dynamic from 'next/dynamic';
+import { useRecoilState } from 'recoil';
+import { testState } from 'states';
 const Select = dynamic(() => import('@mui/material/Select'));
 const MenuItem = dynamic(() => import('@mui/material/MenuItem'));
 const Image = dynamic(() => import('next/image'));
@@ -15,6 +23,7 @@ export const Settings: FC = () => {
   const router = useRouter();
   const { t } = useTranslation('settings');
   const [lang, setLang] = useState<string>(router.locale ?? 'en');
+  const [testMode, setTestMode] = useRecoilState(testState);
 
   const onChange = useCallback(
     (e: SelectChangeEvent<unknown>) => {
@@ -26,14 +35,14 @@ export const Settings: FC = () => {
   );
 
   return (
-    <Box width='100%' height='100%'>
-      <Typography variant='h1' marginBottom='2rem'>
+    <Box width="100%" height="100%">
+      <Typography variant="h1" marginBottom="2rem">
         {t('title.selectLanguage')}
       </Typography>
       <Select
         value={lang}
-        size='small'
-        labelId='select_a_language'
+        size="small"
+        labelId="select_a_language"
         onChange={onChange}
         fullWidth
       >
@@ -51,17 +60,28 @@ export const Settings: FC = () => {
               <Image
                 src={`https://flagcdn.com/w20/${flag.toLowerCase()}.png`}
                 alt={`${id}_flag`}
-                layout='fixed'
-                width='20px'
-                height='15px'
+                layout="fixed"
+                width="20px"
+                height="15px"
               />
-              <Typography component='span' sx={{ marginLeft: '10px' }}>
+              <Typography component="span" sx={{ marginLeft: '10px' }}>
                 {title}
               </Typography>
             </Typography>
           </MenuItem>
         ))}
       </Select>
+      <Divider />
+      <FormControlLabel
+        control={
+          <Switch
+            name="testmode"
+            checked={testMode}
+            onChange={(e) => setTestMode(e.target.checked)}
+          />
+        }
+        label="Test mode"
+      />
       <Divider />
     </Box>
   );

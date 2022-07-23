@@ -23,24 +23,18 @@ const RouteLoader = dynamic(
 );
 const RecoilRoot = dynamic(() => import('components/common/RecoilRoot'));
 const Dialog = dynamic(() => import('components/common/Dialog'));
-const SessionProvider = dynamic<SessionProviderProps>(
-  () => import('next-auth/react').then((mod) => mod.SessionProvider),
-  { ssr: false }
+const SessionProvider = dynamic<SessionProviderProps>(() =>
+  import('next-auth/react').then((mod) => mod.SessionProvider)
 );
 const SessionChecker = dynamic(
-  () => import('components/common/SessionChecker'),
-  { ssr: false }
+  () => import('components/common/SessionChecker')
 );
 const ReactQueryDevtools = dynamic(
-  () => import('components/common/DynamicQueryDevtools'),
-  { ssr: false }
+  () => import('components/common/DynamicQueryDevtools')
 );
-const Pincode = dynamic(() => import('components/common/pincode/Pincode'), {
-  ssr: false,
-});
+const Pincode = dynamic(() => import('components/common/pincode/Pincode'));
 const OnlineIndicator = dynamic(
-  () => import('components/common/OnlineIndicator'),
-  { ssr: false }
+  () => import('components/common/OnlineIndicator')
 );
 
 export type NextPageWithLayout = NextPage & {
