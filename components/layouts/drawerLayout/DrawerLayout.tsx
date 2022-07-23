@@ -7,7 +7,9 @@ import DrawerMain from './DrawerMain';
 import dynamic from 'next/dynamic';
 const DrawerTopNav = dynamic(() => import('./DrawerTopNav'));
 const DrawerHeader = dynamic(() => import('./DrawerHeader'));
-const DrawerSideNav = dynamic(() => import('./DrawerSideNav/DrawerSideNav'));
+const DrawerSideNav = dynamic(() => import('./DrawerSideNav/DrawerSideNav'), {
+  ssr: false,
+});
 
 export interface DrawerLayout {
   children: ReactNode;

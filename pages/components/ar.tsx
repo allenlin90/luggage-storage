@@ -9,9 +9,9 @@ import DrawerLayout from 'components/layouts/drawerLayout/DrawerLayout';
 import { Button, MenuItem } from '@mui/material';
 
 import dynamic from 'next/dynamic';
-const Select = dynamic(() => import('@mui/material/Select'));
+const Select = dynamic(() => import('@mui/material/Select'), { ssr: false });
 const AugmentedReality = dynamic(
-  () => import('components/common/AugmentedReality'),
+  () => import('components/ar/AugmentedReality'),
   { ssr: false }
 );
 

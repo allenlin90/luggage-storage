@@ -1,7 +1,5 @@
-export * from './AugmentedReality';
 export * from './BranchSelect';
 export * from './CancelBtn';
-export * from './Canvas';
 export * from './Dialog';
 export * from './FlexSpacer';
 export * from './OnlineIndicator';
@@ -10,4 +8,3 @@ export * from './pincode';
 export * from './Seo';
 export * from './SearchBar';
 export * from './SessionChecker';
-export * from './Video';

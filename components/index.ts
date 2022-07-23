@@ -24,6 +24,7 @@
 // export * from './scanner/ScannerFull';
 // export * from './scanner/ScannerPanel';
 
+export * from './ar';
 export * from './common';
 export * from './map';
 export * from './scanner';
