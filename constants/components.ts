@@ -9,6 +9,11 @@ export const components = [
     href: '/ar',
     title: 'AR',
   },
+  {
+    id: 'image-preview',
+    href: '/img-preview',
+    title: 'Image Preview',
+  },
 ];
 
 export default components;
