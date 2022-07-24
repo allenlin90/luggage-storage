@@ -24,7 +24,7 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
   };
 };
 
-export const TestingPage: NextPageWithLayout = () => {
+export const ARPage: NextPageWithLayout = () => {
   const setOpen = useSetRecoilState(arState);
   const cameras = useRecoilValue(camerasState);
   const [selectedCamera, setSelectedCamera] =
@@ -53,8 +53,8 @@ export const TestingPage: NextPageWithLayout = () => {
   );
 };
 
-TestingPage.getLayout = (page: ReactNode) => {
+ARPage.getLayout = (page: ReactNode) => {
   return <DrawerLayout>{page}</DrawerLayout>;
 };
 
-export default TestingPage;
+export default ARPage;

@@ -47,5 +47,13 @@
       "confirmPincode": "Confirm PIN",
       "incorrectPin": "Incorrect PIN"
     }
+  },
+  "imgPreview": {
+    "upload": "Drop image here",
+    "helper": "Set maximum number of images can be uploaded",
+    "btn": {
+      "browse": "Browse",
+      "upload": "Upload"
+    }
   }
 }
