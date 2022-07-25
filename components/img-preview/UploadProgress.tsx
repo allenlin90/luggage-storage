@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import axios from 'axios';
-import { useEffect, useCallback, useRef } from 'react';
+import { useEffect, useMemo, useCallback, useRef } from 'react';
 import {
   Box,
   IconButton,
@@ -9,6 +9,7 @@ import {
   Typography,
 } from '@mui/material';
 import { readFileAsync } from 'utils/uploadImg';
+import imageCompression from 'browser-image-compression';
 
 import dynamic from 'next/dynamic';
 const CheckCircleIcon = dynamic(
@@ -25,13 +26,20 @@ export interface IUploadProgressProps {
 export const UploadProgress: FC<IUploadProgressProps> = ({ image }) => {
   const [isDone, setIsDone] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
+  const [compressedImg, setCompressedImg] = useState<File | null>(null);
   const controllerRef = useRef<AbortController | null>(null);
   const uploaded = useRef<boolean>(false);
 
-  const upload = useCallback(async () => {
+  const imgSize = useMemo(() => {
+    const size = ((compressedImg?.size ?? 0) / 1024).toFixed(2);
+    return size;
+  }, [compressedImg]);
+
+  const upload = useCallback(async (compressedImg: File) => {
+    const imgBase64 = await readFileAsync(compressedImg);
+
     const controller = new AbortController();
     controllerRef.current = controller;
-    const imgBase64 = await readFileAsync(image);
     const { status } = await axios.post<{ status: number }>(
       '/api/upload-img',
       { img: imgBase64 },
@@ -49,27 +57,36 @@ export const UploadProgress: FC<IUploadProgressProps> = ({ image }) => {
     if (status === 200) {
       setIsDone(true);
     }
-  }, [image]);
+  }, []);
 
   useEffect(() => {
-    if (!uploaded.current) {
-      upload();
+    if (!uploaded.current && compressedImg) {
+      upload(compressedImg);
       uploaded.current = true;
+    } else if (!compressedImg) {
+      imageCompression(image, {
+        maxSizeMB: 0.7,
+        maxWidthOrHeight: 1920,
+        alwaysKeepResolution: true,
+        useWebWorker: true,
+      }).then((img) => {
+        setCompressedImg(img);
+      });
     }
+  }, [upload, compressedImg, image]);
 
+  useEffect(() => {
     return () => {
       controllerRef.current = null;
       uploaded.current = false;
+      setProgress(0);
+      setIsDone(false);
+      setCompressedImg(null);
     };
-  }, [upload]);
+  }, []);
 
   return (
-    <Card
-      sx={{
-        py: 1,
-        px: 2,
-      }}
-    >
+    <Card sx={{ py: 1, px: 2 }}>
       <Typography
         sx={{
           display: 'inline-flex',
@@ -79,9 +96,7 @@ export const UploadProgress: FC<IUploadProgressProps> = ({ image }) => {
       >
         <Typography component="span">{image.name}</Typography>
         &nbsp;
-        <Typography component="span">
-          {(image.size / 1024).toFixed(2)} KB
-        </Typography>
+        <Typography component="span">{imgSize} KB</Typography>
       </Typography>
       <Box
         sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
