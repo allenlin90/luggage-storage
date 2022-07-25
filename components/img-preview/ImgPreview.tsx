@@ -2,14 +2,7 @@ import type { FC } from 'react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import { useDropzone } from 'react-dropzone';
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Divider,
-  TextField,
-} from '@mui/material';
+import { Box, Card, CardContent, Divider, TextField } from '@mui/material';
 import ImageThumb from './ImageThumb';
 import Placeholder from './Placeholder';
 import AddImage from './AddImage';
@@ -23,7 +16,6 @@ export const ImgPreview: FC<IImgPreviewProps> = ({ max = 3 }) => {
   const { t } = useTranslation('common');
   const [images, setImages] = useState<File[]>([]);
   const [maxImgs, setMaxImgs] = useState<number>(max);
-  const [isUploading, setIsUploading] = useState<boolean>(false);
 
   const { getRootProps, getInputProps, open } = useDropzone({
     accept: { 'image/*': ['.png', '.jpeg'] },
@@ -41,7 +33,6 @@ export const ImgPreview: FC<IImgPreviewProps> = ({ max = 3 }) => {
     return () => {
       setMaxImgs(max);
       setImages([]);
-      setIsUploading(false);
     };
   }, [max]);
 
@@ -64,15 +55,6 @@ export const ImgPreview: FC<IImgPreviewProps> = ({ max = 3 }) => {
           }}
         />
         <br />
-        <Button
-          variant="contained"
-          disabled={!images.length}
-          onClick={() => {
-            setIsUploading(true);
-          }}
-        >
-          {t('imgPreview.btn.upload')}
-        </Button>
       </>
       <Divider />
       <div {...getRootProps()}>
@@ -106,7 +88,7 @@ export const ImgPreview: FC<IImgPreviewProps> = ({ max = 3 }) => {
         </Card>
       </div>
       <Divider />
-      {isUploading && <ImgUpload images={images} />}
+      <ImgUpload images={images} />
     </>
   );
 };
