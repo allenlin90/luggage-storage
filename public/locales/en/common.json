@@ -53,6 +53,7 @@
     "helper": "Set maximum number of images can be uploaded",
     "btn": {
       "browse": "Browse",
+      "cancel": "Cancel",
       "upload": "Upload"
     }
   }
