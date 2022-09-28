@@ -1,6 +1,8 @@
 /** @type {import('next').NextConfig} */
 // const withPWA = require('next-pwa');
 // eslint-disable-next-line
+const { version } = require('./package.json');
+// eslint-disable-next-line
 const { i18n } = require('./next-i18next.config');
 // eslint-disable-next-line
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
@@ -14,6 +16,7 @@ const nextConfig = {
     domains: ['flagcdn.com', 'images.unsplash.com'],
   },
   publicRuntimeConfig: {
+    version,
     production: process.env.APP_ENV === 'production',
     staging: process.env.APP_ENV === 'staging',
     local: process.env.APP_ENV === 'local',
@@ -22,6 +25,14 @@ const nextConfig = {
   // pwa: {
   //   disable: process.env.NODE_ENV !== 'production',
   // },
+  async rewrites() {
+    return [
+      {
+        source: '/version',
+        destination: '/api/version',
+      },
+    ];
+  },
 };
 
 // module.exports = withBundleAnalyzer(withPWA(nextConfig));
